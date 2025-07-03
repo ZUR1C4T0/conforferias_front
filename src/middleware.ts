@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   const publicPaths = ["/login"];
   const protectedPaths = ["/dashboard"];
 
-  const isPublicPath = publicPaths.includes(pathname);
+  const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
   const isProtectedRoute = protectedPaths.some((path) =>
     pathname.startsWith(path),
   );
