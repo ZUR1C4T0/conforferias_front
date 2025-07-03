@@ -14,7 +14,7 @@ const publicSans = Public_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Create Next App",
+  title: ".:: Conforferias ::.",
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "./login.action";
+import { login } from "./actions/login";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
