@@ -38,14 +38,23 @@ export default function LoginPage() {
               <label htmlFor="password" className="label-text">
                 Contraseña
               </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="input"
-                placeholder="Ingrese su contraseña"
-                required
-              />
+              <div className="input">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Ingrese su contraseña"
+                  required
+                />
+                <button
+                  type="button"
+                  data-toggle-password='{ "target": "#password" }'
+                  className="block cursor-pointer"
+                >
+                  <span className="icon-[tabler--eye] password-active:block hidden size-5 shrink-0 text-base-content/80"></span>
+                  <span className="icon-[tabler--eye-off] block password-active:hidden size-5 shrink-0 text-base-content/80"></span>
+                </button>
+              </div>
             </div>
             <LoginButton />
           </form>

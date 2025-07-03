@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Public_Sans } from "next/font/google";
 import type { PropsWithChildren } from "react";
+import { FlyonuiScript } from "@/components/FlyonuiScript";
 
 import "./globals.css";
-import { FlyonuiScript } from "@/components/FlyonuiScript";
 
 const publicSans = Public_Sans({
   preload: true,

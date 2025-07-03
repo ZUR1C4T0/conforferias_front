@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 async function loadFlyonUI() {
@@ -7,14 +8,18 @@ async function loadFlyonUI() {
 }
 
 export function FlyonuiScript() {
+  const path = usePathname();
+
   useEffect(() => {
     const initFlyonUI = async () => {
       await loadFlyonUI();
     };
 
     initFlyonUI();
+    console.log("initFlyonUI");
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: is needed in doc
   useEffect(() => {
     setTimeout(() => {
       if (
@@ -22,9 +27,10 @@ export function FlyonuiScript() {
         typeof window.HSStaticMethods.autoInit === "function"
       ) {
         window.HSStaticMethods.autoInit();
+        console.log("autoInit");
       }
-    }, 100);
-  }, []);
+    }, 500);
+  }, [path]);
 
   return null;
 }
