@@ -2,7 +2,7 @@
 
 import { isAxiosError } from "axios";
 import { cookies } from "next/headers";
-import { RedirectType, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { axiosInstance } from "@/lib/axios";
 
 export async function login(formData: FormData): Promise<string | undefined> {
@@ -28,7 +28,6 @@ export async function login(formData: FormData): Promise<string | undefined> {
       maxAge: 60 * 60 * 24 * 5, // Five days
       path: "/",
     });
-    axiosInstance.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       return "Credenciales incorrectas";
@@ -37,5 +36,5 @@ export async function login(formData: FormData): Promise<string | undefined> {
   }
 
   // `redirect` no se puede usar dentro de un try/catch
-  redirect("/dashboard", RedirectType.push);
+  redirect("/dashboard");
 }
