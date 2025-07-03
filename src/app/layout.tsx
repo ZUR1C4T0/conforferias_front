@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import type { PropsWithChildren } from "react";
 
 import "./globals.css";
+import { FlyonuiScript } from "@/components/FlyonuiScript";
 
-const roboto = Roboto({ preload: true, display: "swap" });
+const publicSans = Public_Sans({
+  preload: true,
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,9 +19,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="es">
-      <body style={roboto.style} className="antialiased">
+    <html lang="es" data-theme="corporate">
+      <body style={publicSans.style} className="antialiased">
         {children}
+        <FlyonuiScript />
       </body>
     </html>
   );

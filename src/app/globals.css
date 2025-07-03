@@ -1,24 +1,13 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@plugin "flyonui" {
+  themes: light --default, dark --prefersdark, corporate;
 }
+@plugin "@iconify/tailwind4";
+@import "flyonui/variants.css";
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@source "./node_modules/flyonui/flyonui.js";
 
 @utility container {
   margin-inline: auto;
   padding-inline: 1rem;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
