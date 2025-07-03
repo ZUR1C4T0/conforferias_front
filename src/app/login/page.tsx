@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { login } from "./actions/login";
+import { LoginButton } from "./components/LoginButton";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -46,10 +47,7 @@ export default function LoginPage() {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary btn-block">
-              Iniciar Sesión
-              <span className="icon-[tabler--login-2] size-4.5 shrink-0"></span>
-            </button>
+            <LoginButton />
           </form>
         </div>
         {error && (
