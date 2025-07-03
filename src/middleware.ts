@@ -1,24 +1,50 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const sessionToken = request.cookies.get("accessToken");
+export async function middleware(request: NextRequest) {
+  const accessToken = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
   const { pathname } = request.nextUrl;
 
-  const publicPaths = ["/login"];
-  const protectedPaths = ["/dashboard"];
+  const isPublicRoute = pathname === "/login";
+  const isProtectedRoute = pathname.startsWith("/dashboard");
 
-  const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
-  const isProtectedRoute = protectedPaths.some((path) =>
-    pathname.startsWith(path),
-  );
-
-  if (sessionToken && isPublicPath) {
+  if (isPublicRoute && accessToken) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (!sessionToken && isProtectedRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (isProtectedRoute) {
+    if (!accessToken && refreshToken) {
+      try {
+        const response = await fetch(
+          `${process.env.BACKEND_URL}/auth/refresh`,
+          {
+            method: "POST",
+            body: JSON.stringify({ refreshToken }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        const contentType = response.headers.get("Content-Type");
+        if (response.ok && contentType?.includes("json")) {
+          const { accessToken: newAccessToken } = await response.json();
+          const res = NextResponse.next();
+          res.cookies.set("accessToken", newAccessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 60 * 60, // 1h
+            path: "/",
+          });
+          return res;
+        }
+      } catch {
+        // Falló el intento de refresh → continuar a redirección
+      }
+    }
+    if (!accessToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
   return NextResponse.next();
