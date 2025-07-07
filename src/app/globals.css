@@ -2,9 +2,7 @@
 @plugin "flyonui" {
   themes: light --default, dark --prefersdark, corporate;
 }
-@plugin "@iconify/tailwind4";
 @import "flyonui/variants.css";
-/* @source "flyonui/flyonui.js"; */
 @source "../../node_modules/flyonui/flyonui.js";
 
 @utility container {

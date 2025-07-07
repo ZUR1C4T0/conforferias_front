@@ -8,6 +8,7 @@
     "lint": "biome check --write src/"
   },
   "dependencies": {
+    "@iconify/react": "6.0.0",
     "axios": "1.10.0",
     "flyonui": "2.2.0",
     "jwt-decode": "4.0.0",
@@ -17,8 +18,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.6",
-    "@iconify/json": "2.2.354",
-    "@iconify/tailwind4": "1.0.6",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^20.19.4",
     "@types/react": "^19.1.8",
