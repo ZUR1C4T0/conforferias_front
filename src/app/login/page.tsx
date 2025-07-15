@@ -1,8 +1,9 @@
 "use client";
 
+import { Icon } from "@iconify/react";
 import { useState } from "react";
+import { SubmitButton } from "@/components/SubmitButton";
 import { login } from "./actions/login";
-import { LoginButton } from "./components/LoginButton";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -51,12 +52,20 @@ export default function LoginPage() {
                   data-toggle-password='{ "target": "#password" }'
                   className="block cursor-pointer"
                 >
-                  <span className="icon-[tabler--eye] password-active:block hidden size-5 shrink-0 text-base-content/80"></span>
-                  <span className="icon-[tabler--eye-off] block password-active:hidden size-5 shrink-0 text-base-content/80"></span>
+                  <Icon
+                    icon="tabler:eye"
+                    className="password-active:block hidden size-5 shrink-0 text-base-content/80"
+                  />
+                  <Icon
+                    icon="tabler:eye-off"
+                    className="block password-active:hidden size-5 shrink-0 text-base-content/80"
+                  />
                 </button>
               </div>
             </div>
-            <LoginButton />
+            <SubmitButton>
+              <Icon icon="tabler:login-2" className="size-4.5" /> Iniciar Sesión
+            </SubmitButton>
           </form>
         </div>
         {error && (

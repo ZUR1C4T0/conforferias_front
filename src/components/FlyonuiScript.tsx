@@ -1,13 +1,25 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import {
+  type Dispatch,
+  type PropsWithChildren,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { FlyonUIContext } from "@/hooks/useFlyonUI";
 
 async function loadFlyonUI() {
   return import("flyonui/flyonui");
 }
 
-export function FlyonuiScript() {
+function FlyonuiScript({
+  setLoaded,
+}: {
+  setLoaded: Dispatch<SetStateAction<boolean>>;
+}) {
   const path = usePathname();
   const hasLoadedRef = useRef(false);
 
@@ -15,6 +27,7 @@ export function FlyonuiScript() {
     if (!hasLoadedRef.current) {
       loadFlyonUI().then(() => {
         hasLoadedRef.current = true;
+        setLoaded(true);
         if (
           window.HSStaticMethods &&
           typeof window.HSStaticMethods.autoInit === "function"
@@ -27,8 +40,8 @@ export function FlyonuiScript() {
 
     const handleRouteChange = () => {
       const overlays = document.querySelectorAll<HTMLElement>(".overlay.open");
-      for (const overlay of overlays) {
-        const instance = window.HSOverlay.getInstance(overlay, true);
+      for (const $overlay of overlays) {
+        const instance = window.HSOverlay.getInstance($overlay, true);
         instance?.element.close(true);
       }
     };
@@ -50,10 +63,16 @@ export function FlyonuiScript() {
       window.history.pushState = originalPushState;
       window.history.replaceState = originalReplaceState;
     };
-  }, []);
+  }, [setLoaded]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Intenta cargar flyonui cuando cambia la ruta
   useEffect(() => {
+    const overlays = document.querySelectorAll<HTMLElement>(".overlay.open");
+    for (const $overlay of overlays) {
+      const instance = window.HSOverlay.getInstance($overlay, true);
+      instance?.element.close(true);
+    }
+
     if (
       hasLoadedRef.current &&
       window.HSStaticMethods &&
@@ -65,4 +84,14 @@ export function FlyonuiScript() {
   }, [path]);
 
   return null;
+}
+
+export function FlyonUIProvider({ children }: PropsWithChildren) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <FlyonUIContext.Provider value={{ loaded }}>
+      {children}
+      <FlyonuiScript setLoaded={setLoaded} />
+    </FlyonUIContext.Provider>
+  );
 }

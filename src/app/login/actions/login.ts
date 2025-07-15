@@ -36,5 +36,5 @@ export async function login(formData: FormData): Promise<string | undefined> {
   }
 
   // `redirect` no se puede usar dentro de un try/catch
-  redirect("/dashboard");
+  redirect("/dashboard/fairs");
 }

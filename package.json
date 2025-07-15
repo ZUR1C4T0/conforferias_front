@@ -8,22 +8,29 @@
     "lint": "biome check --write src/"
   },
   "dependencies": {
+    "@hookform/resolvers": "5.1.1",
     "@iconify/react": "6.0.0",
     "axios": "1.10.0",
-    "flyonui": "2.2.0",
+    "datatables.net-dt": "2.3.2",
+    "datatables.net-react": "1.0.1",
+    "flyonui": "2.3.0",
     "jwt-decode": "4.0.0",
-    "next": "15.3.4",
+    "next": "15.3.5",
+    "notyf": "3.10.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-hook-form": "7.60.0",
+    "server-only": "0.0.1",
+    "zod": "4.0.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.6",
-    "@tailwindcss/postcss": "^4.1.11",
-    "@types/node": "^20.19.4",
+    "@biomejs/biome": "2.1.1",
+    "@tailwindcss/postcss": "4.1.11",
+    "@types/node": "^20.19.8",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "tailwindcss": "^4.1.11",
-    "typescript": "^5.8.3"
+    "tailwindcss": "4.1.11",
+    "typescript": "5.8.3"
   },
   "packageManager": "pnpm@9.15.9"
 }

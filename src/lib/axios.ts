@@ -1,6 +1,7 @@
 import type { AxiosRequestConfig } from "axios";
 import axios, { HttpStatusCode, isAxiosError } from "axios";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const axiosInstance = axios.create({
   adapter: "fetch",
@@ -14,12 +15,12 @@ export async function secureFetch<T = unknown>(
   const accessToken = cookiesStore.get("accessToken")?.value;
   const refreshToken = cookiesStore.get("refreshToken")?.value;
 
-  if (!accessToken || !refreshToken) {
-    throw new Error("Sin sesión activa");
+  if (!accessToken && !refreshToken) {
+    redirect("/login");
   }
 
   try {
-    const response = await axiosInstance({
+    const response = await axiosInstance.request({
       ...config,
       headers: {
         ...config.headers,
@@ -51,7 +52,7 @@ export async function secureFetch<T = unknown>(
         });
         return retry.data;
       } catch {
-        throw new Error("SESSION_EXPIRED");
+        redirect("/login");
       }
     }
     throw error;

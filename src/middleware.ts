@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = pathname.startsWith("/dashboard");
 
   if (isPublicRoute && accessToken) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/dashboard/fairs", request.url));
   }
 
   if (isProtectedRoute) {

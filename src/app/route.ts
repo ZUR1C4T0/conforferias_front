@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const cookieStore = await cookies();
-  const sessionToken = cookieStore.get("session_token");
+  const sessionToken = cookieStore.get("accessToken");
 
   const { searchParams } = new URL(request.url);
-  const redirectTo = searchParams.get("redirectTo") || "/dashboard"; // Default redirect if authenticated
+  const redirectTo = searchParams.get("redirectTo") || "/dashboard/fairs";
 
   if (sessionToken) {
     // If authenticated, redirect to the intended page (e.g., dashboard)

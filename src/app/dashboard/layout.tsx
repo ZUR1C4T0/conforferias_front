@@ -1,16 +1,22 @@
+import { Icon } from "@iconify/react";
 import Link from "next/link";
 import type { PropsWithChildren } from "react";
+import { getRole } from "@/lib/getRole";
+import { menuItemsByRole } from "@/lib/menu";
+import { slugify } from "@/utils/slugify";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
+  const role = await getRole();
+
   return (
     <>
       <nav className="navbar relative z-1 border-base-content/25 border-b">
         <button
           type="button"
-          className="btn btn-text btn-square me-2 lg:hidden"
+          className="btn btn-primary btn-text btn-square me-2 lg:hidden"
           data-overlay="#default-sidebar"
         >
-          <span className="icon-[tabler--menu-2] size-8"></span>
+          <Icon icon="tabler:menu-2" className="size-8" />
         </button>
         <div className="flex flex-1 items-center">
           <Link
@@ -36,12 +42,50 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
         </button>
         <div className="drawer-body pt-12 lg:pt-4">
           <ul className="menu p-0">
-            <li>
-              <Link href="/dashboard">
-                <span className="icon-[tabler--home] size-5"></span>
-                Dashboard
-              </Link>
-            </li>
+            {menuItemsByRole[role].map((item) => {
+              if ("subItems" in item) {
+                return (
+                  <li key={item.label} className="space-y-0.5">
+                    <button
+                      type="button"
+                      className="collapse-toggle open collapse-open:bg-base-content/10"
+                      id={`menu-${slugify(item.label)}`}
+                      data-collapse={`#menu-${slugify(item.label)}-collapse`}
+                    >
+                      <Icon icon={item.icon} className="size-5" />
+                      {item.label}
+                      <Icon
+                        icon="tabler:chevron-down"
+                        className="size-4 collapse-open:rotate-180 transition-all duration-300"
+                      />
+                    </button>
+                    <ul
+                      id={`menu-${slugify(item.label)}-collapse`}
+                      className="open collapse w-auto space-y-0.5 overflow-hidden transition-[height] duration-300"
+                    >
+                      {item.subItems.map((subitem) => (
+                        <li key={subitem.label}>
+                          <Link href={subitem.path}>
+                            {subitem.icon && (
+                              <Icon icon={subitem.icon} className="size-5" />
+                            )}
+                            {subitem.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              }
+              return (
+                <li key={item.label}>
+                  <Link href={item.path}>
+                    <Icon icon={item.icon} className="size-5" />
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
         <div className="drawer-body" style={{ flexGrow: 0 }}>
@@ -49,9 +93,10 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
             <li>
               <Link
                 href="/logout"
-                className="flex flex-nowrap items-center gap-2 "
+                className="flex flex-nowrap items-center gap-2"
+                prefetch={false}
               >
-                <span className="icon-[tabler--logout]"></span>
+                <Icon icon="tabler:logout" className="size-5" />
                 Cerrar sesión
               </Link>
             </li>
@@ -59,10 +104,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
         </div>
       </aside>
 
-      <main
-        style={{ height: "calc(100dvh - 4rem)" }}
-        className="container overflow-y-scroll py-8 lg:absolute lg:z-0 lg:ms-72 lg:w-auto"
-      >
+      <main className="container overflow-y-auto py-8 lg:z-0 lg:ms-72 lg:h-[calc(100dvh-4rem)] lg:w-[calc(100dvw-18rem)]">
         {children}
       </main>
     </>
