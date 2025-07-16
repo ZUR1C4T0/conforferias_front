@@ -1,4 +1,8 @@
-export function PotentialBadge({ potential }: { potential: Potential }) {
+export function PotentialBadge({
+  potential,
+}: {
+  potential: Potential | string;
+}) {
   let classes: string;
   switch (potential) {
     case "BAJO":
@@ -9,6 +13,9 @@ export function PotentialBadge({ potential }: { potential: Potential }) {
       break;
     case "ALTO":
       classes = "badge badge-success text-xs";
+      break;
+    default:
+      classes = "badge badge-accent text-xs";
       break;
   }
 
