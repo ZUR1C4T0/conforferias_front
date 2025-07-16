@@ -179,10 +179,13 @@ export default async function ContactPage({ params }: NextPageContext) {
       <div className="card card-border">
         <div className="card-header flex items-center justify-between">
           <h2 className="card-title">Historial de Seguimiento</h2>
-          <button type="button" className="btn btn-primary btn-sm">
+          <Link
+            href={`./${contact.id}/add-tracking`}
+            className="btn btn-primary btn-sm"
+          >
             <Icon icon="tabler:plus" className="size-4" />{" "}
             <span className="hidden sm:inline">Nueva Nota</span>
-          </button>
+          </Link>
         </div>
         <div className="card-body">
           {contact.tracking.length === 0 ? (
