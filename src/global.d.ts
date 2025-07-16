@@ -1,4 +1,5 @@
 import type { HSComboBox, HSOverlay, IStaticMethods } from "flyonui/flyonui";
+import type { ActivityType } from "./lib/constants";
 
 declare global {
   interface Window {
@@ -19,7 +20,7 @@ declare global {
     role: Role;
   }
 
-  type Fair = {
+  interface Fair {
     id: string;
     name: string;
     logoUrl: string;
@@ -33,16 +34,27 @@ declare global {
     totalInvestment: number | null;
     createdAt: string;
     updatedAt: string;
-  };
+  }
 
   type Potential = "BAJO" | "MEDIO" | "ALTO";
 
-  type Contact = {
+  interface Contact {
     id: string;
     name: string;
     company: string;
     profile: { name: string };
     otherProfile: string;
     estimatedPotential: Potential;
-  };
+  }
+
+  interface Activity {
+    id: string;
+    fairId: string;
+    representativeId: string;
+    type: ActivityType;
+    description: string;
+    attendees: number | null;
+    createdAt: string;
+    updatedAt: string;
+  }
 }

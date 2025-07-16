@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { secureFetch } from "@/lib/axios";
 import { getRole } from "@/lib/getRole";
+import ActivitiesTable from "./components/ActivitiesTable";
 import ContactsTable from "./components/ContactsTable";
 
 export default async function FairPage({ params }: NextPageContext) {
@@ -67,26 +68,26 @@ export default async function FairPage({ params }: NextPageContext) {
       </div>
 
       <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">Actividades paralelas</h2>
+        <div className="card-header flex gap-2">
+          <h2 className="card-title grow">Actividades paralelas</h2>
+          {canCreate && (
+            <Link
+              href={`./${fairId}/activities/create`}
+              className="btn btn-primary btn-soft"
+            >
+              <Icon icon="tabler:plus" className="size-5" />{" "}
+              <span className="hidden 2xl:inline">Crear actividad</span>
+            </Link>
+          )}
+        </div>
+        <div className="card-body h-80 overflow-y-auto">
+          <ActivitiesTable fairId={fair.id} />
         </div>
       </div>
 
       <div className="card card-border">
         <div className="card-header">
-          <h2 className="card-title">Actividades paralelas</h2>
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">Competidres</h2>
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">Actividades paralelas</h2>
+          <h2 className="card-title">Competidores</h2>
         </div>
       </div>
 

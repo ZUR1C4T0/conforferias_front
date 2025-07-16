@@ -1,0 +1,5 @@
+export enum ActivityType {
+  CHARLA_TECNICA = "CHARLA_TECNICA",
+  RUEDA_DE_NEGOCIOS = "RUEDA_DE_NEGOCIOS",
+  OTRO = "OTRO",
+}
