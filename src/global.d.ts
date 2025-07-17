@@ -57,4 +57,18 @@ declare global {
     createdAt: string;
     updatedAt: string;
   }
+
+  interface Competitor {
+    id: string;
+    fairId: string;
+    company: string;
+    country: string;
+    city: string | null;
+    createdAt: string;
+    updatedAt: string;
+    representativeId: string;
+    featuredProducts: string;
+    strengths: string;
+    weaknesses: string;
+  }
 }
