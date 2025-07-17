@@ -6,6 +6,7 @@ import { getRole } from "@/lib/getRole";
 import CompetitorsTable from "./CompetitorsTable";
 import ActivitiesTable from "./components/ActivitiesTable";
 import ContactsTable from "./components/ContactsTable";
+import TrendsTable from "./components/TrendsTable";
 
 export default async function FairPage({ params }: NextPageContext) {
   const role = await getRole();
@@ -86,6 +87,22 @@ export default async function FairPage({ params }: NextPageContext) {
         </div>
       </div>
 
+      <div className="card card-border">
+        <div className="card-header flex gap-2">
+          <h2 className="card-title grow">Tendencias observadas</h2>
+          <Link
+            href={`./${fairId}/trends/create`}
+            className="btn btn-primary btn-soft"
+          >
+            <Icon icon="tabler:plus" className="size-5" />{" "}
+            <span className="hidden 2xl:inline">Registrar tendencia</span>
+          </Link>
+        </div>
+        <div className="card-body h-80 overflow-y-auto">
+          <TrendsTable fairId={fair.id} />
+        </div>
+      </div>
+
       <div className="card card-border col-span-full">
         <div className="card-header flex gap-2">
           <h2 className="card-title grow">Competidores</h2>
@@ -99,12 +116,6 @@ export default async function FairPage({ params }: NextPageContext) {
         </div>
         <div className="card-body h-80 overflow-y-auto">
           <CompetitorsTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">Tendencias observadas</h2>
         </div>
       </div>
 

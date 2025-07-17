@@ -71,4 +71,13 @@ declare global {
     strengths: string;
     weaknesses: string;
   }
+
+  interface Trend {
+    id: string;
+    fairId: string;
+    title: string;
+    details: string | null;
+    createdAt: string;
+    updatedAt: string;
+  }
 }
