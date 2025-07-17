@@ -6,6 +6,7 @@ import { getRole } from "@/lib/getRole";
 import CompetitorsTable from "./CompetitorsTable";
 import ActivitiesTable from "./components/ActivitiesTable";
 import ContactsTable from "./components/ContactsTable";
+import DAFOTable from "./components/DAFOTable";
 import TrendsTable from "./components/TrendsTable";
 
 export default async function FairPage({ params }: NextPageContext) {
@@ -119,9 +120,19 @@ export default async function FairPage({ params }: NextPageContext) {
         </div>
       </div>
 
-      <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">DAFO</h2>
+      <div className="card card-border col-span-full">
+        <div className="card-header flex gap-2">
+          <h2 className="card-title grow">DAFO</h2>
+          <Link
+            href={`./${fairId}/dafo/create`}
+            className="btn btn-primary btn-soft"
+          >
+            <Icon icon="tabler:plus" className="size-5" />{" "}
+            <span className="hidden sm:inline">Agregar elemento DAFO</span>
+          </Link>
+        </div>
+        <div className="card-body">
+          <DAFOTable fairId={fair.id} />
         </div>
       </div>
 

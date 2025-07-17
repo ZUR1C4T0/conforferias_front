@@ -3,3 +3,10 @@ export enum ActivityType {
   RUEDA_DE_NEGOCIOS = "RUEDA_DE_NEGOCIOS",
   OTRO = "OTRO",
 }
+
+export enum DafoType {
+  DEBILIDAD = "DEBILIDAD",
+  AMENAZA = "AMENAZA",
+  FORTALEZA = "FORTALEZA",
+  OPORTUNIDAD = "OPORTUNIDAD",
+}
