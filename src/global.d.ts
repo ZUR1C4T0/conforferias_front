@@ -123,4 +123,14 @@ declare global {
     createdAt: string;
     updatedAt: string;
   }
+
+  // Areas de mejora
+  interface ImprovementArea {
+    id: string;
+    fairId: string;
+    representativeId: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+  }
 }
