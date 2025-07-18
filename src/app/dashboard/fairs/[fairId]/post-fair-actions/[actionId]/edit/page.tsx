@@ -26,7 +26,7 @@ export default async function EditActionPage({ params }: NextPageContext) {
         </h1>
       </div>
 
-      <EditActionForm action={action} fairId={fairId} />
+      <EditActionForm action={action} />
     </div>
   );
 }

@@ -42,13 +42,7 @@ const statusOptions = [
   },
 ];
 
-export default function EditActionForm({
-  action,
-  fairId,
-}: {
-  action: PostFairAction;
-  fairId: string;
-}) {
+export default function EditActionForm({ action }: { action: PostFairAction }) {
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(schema),
