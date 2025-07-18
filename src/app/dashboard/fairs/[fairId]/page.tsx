@@ -9,9 +9,10 @@ import ActivitiesTable from "./components/ActivitiesTable";
 import ContactsTable from "./components/ContactsTable";
 import DAFOTable from "./components/DAFOTable";
 import EvaluateFair from "./components/EvaluateFair";
-import PostFairActionsTable from "./components/PostFairActionsTable";
-import TrendsTable from "./components/TrendsTable";
 import ImprovementAreasTable from "./components/ImprovementAreasTable";
+import PostFairActionsTable from "./components/PostFairActionsTable";
+import RecommendationsTable from "./components/RecommendationsTable";
+import TrendsTable from "./components/TrendsTable";
 
 export default async function FairPage({ params }: NextPageContext) {
   const role = await getRole();
@@ -189,7 +190,7 @@ export default async function FairPage({ params }: NextPageContext) {
             className="btn btn-primary btn-soft"
           >
             <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden sm:inline">Crear área de mejora</span>
+            <span className="hidden 2xl:inline">Crear área de mejora</span>
           </Link>
         </div>
         <div className="card-body h-80 overflow-y-auto">
@@ -198,10 +199,18 @@ export default async function FairPage({ params }: NextPageContext) {
       </div>
 
       <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">
-            Recomendaciones para futuras participaciones
-          </h2>
+        <div className="card-header flex gap-2">
+          <h2 className="card-title grow">Recomendaciones</h2>
+          <Link
+            href={`./${fairId}/recommendations/create`}
+            className="btn btn-primary btn-soft"
+          >
+            <Icon icon="tabler:plus" className="size-5" />{" "}
+            <span className="hidden 2xl:inline">Crear recomendación</span>
+          </Link>
+        </div>
+        <div className="card-body h-80 overflow-y-auto">
+          <RecommendationsTable fairId={fair.id} />
         </div>
       </div>
     </div>
