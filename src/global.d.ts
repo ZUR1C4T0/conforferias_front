@@ -1,5 +1,5 @@
 import type { HSComboBox, HSOverlay, IStaticMethods } from "flyonui/flyonui";
-import type { ActivityType, DafoType } from "./lib/constants";
+import type { ActionStatus, ActivityType, DafoType } from "./lib/constants";
 
 declare global {
   interface Window {
@@ -87,5 +87,20 @@ declare global {
     representativeId: string;
     type: DafoType;
     description: string;
+  }
+
+  interface PostFairAction {
+    id: string;
+    fairId: string;
+    action: string;
+    responsibleId: string;
+    limitDate: string;
+    status: ActionStatus;
+    createdAt: string;
+    updatedAt: string;
+    responsible: {
+      id: string;
+      fullName: string;
+    };
   }
 }

@@ -10,3 +10,10 @@ export enum DafoType {
   FORTALEZA = "FORTALEZA",
   OPORTUNIDAD = "OPORTUNIDAD",
 }
+
+export enum ActionStatus {
+  PENDIENTE = "PENDIENTE",
+  EN_PROGRESO = "EN_PROGRESO",
+  COMPLETADA = "COMPLETADA",
+  CANCELADA = "CANCELADA",
+}

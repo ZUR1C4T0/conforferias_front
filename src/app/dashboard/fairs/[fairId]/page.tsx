@@ -7,6 +7,7 @@ import CompetitorsTable from "./CompetitorsTable";
 import ActivitiesTable from "./components/ActivitiesTable";
 import ContactsTable from "./components/ContactsTable";
 import DAFOTable from "./components/DAFOTable";
+import PostFairActionsTable from "./components/PostFairActionsTable";
 import TrendsTable from "./components/TrendsTable";
 
 export default async function FairPage({ params }: NextPageContext) {
@@ -133,6 +134,22 @@ export default async function FairPage({ params }: NextPageContext) {
         </div>
         <div className="card-body">
           <DAFOTable fairId={fair.id} />
+        </div>
+      </div>
+
+      <div className="card card-border col-span-full">
+        <div className="card-header flex gap-2">
+          <h2 className="card-title grow">Acciones Postferia</h2>
+          <Link
+            href={`./${fairId}/post-fair-actions/create`}
+            className="btn btn-primary btn-soft"
+          >
+            <Icon icon="tabler:plus" className="size-5" />{" "}
+            <span className="hidden sm:inline">Crear acción</span>
+          </Link>
+        </div>
+        <div className="card-body h-80 overflow-y-auto">
+          <PostFairActionsTable fairId={fair.id} />
         </div>
       </div>
 
