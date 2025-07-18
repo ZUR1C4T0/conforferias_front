@@ -10,6 +10,7 @@ import DAFOTable from "./components/DAFOTable";
 import EvaluateFair from "./components/EvaluateFair";
 import PostFairActionsTable from "./components/PostFairActionsTable";
 import TrendsTable from "./components/TrendsTable";
+import AchievementsTable from "./components/AchievementsTable";
 
 export default async function FairPage({ params }: NextPageContext) {
   const role = await getRole();
@@ -164,8 +165,18 @@ export default async function FairPage({ params }: NextPageContext) {
       </div>
 
       <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">Principales logros</h2>
+        <div className="card-header flex gap-2">
+          <h2 className="card-title grow">Principales logros</h2>
+          <Link
+            href={`./${fairId}/achievements/create`}
+            className="btn btn-primary btn-soft"
+          >
+            <Icon icon="tabler:plus" className="size-5" />{" "}
+            <span className="hidden sm:inline">Crear logro</span>
+          </Link>
+        </div>
+        <div className="card-body h-80 overflow-y-auto">
+          <AchievementsTable fairId={fair.id} />
         </div>
       </div>
 
