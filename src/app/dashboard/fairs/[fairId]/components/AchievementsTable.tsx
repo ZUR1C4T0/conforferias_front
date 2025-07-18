@@ -11,16 +11,12 @@ export default async function AchievementsTable({
   });
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table">
-        <tbody>
-          {achievements.map((achievement) => (
-            <tr key={achievement.id}>
-              <td>{achievement.content}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <ul className="divide-y divide-base-200">
+      {achievements.map((achievement) => (
+        <li key={achievement.id} className="p-4 hover:bg-base-100">
+          <p className="whitespace-pre-line text-sm">{achievement.content}</p>
+        </li>
+      ))}
+    </ul>
   );
 }
