@@ -103,4 +103,14 @@ declare global {
       fullName: string;
     };
   }
+
+  interface Evaluation {
+    id: string;
+    fairId: string;
+    representativeId: string;
+    score: number;
+    explanation: string;
+    createdAt: string;
+    updatedAt: string;
+  }
 }

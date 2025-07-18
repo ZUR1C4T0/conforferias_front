@@ -7,6 +7,7 @@ import CompetitorsTable from "./CompetitorsTable";
 import ActivitiesTable from "./components/ActivitiesTable";
 import ContactsTable from "./components/ContactsTable";
 import DAFOTable from "./components/DAFOTable";
+import EvaluateFair from "./components/EvaluateFair";
 import PostFairActionsTable from "./components/PostFairActionsTable";
 import TrendsTable from "./components/TrendsTable";
 
@@ -156,6 +157,9 @@ export default async function FairPage({ params }: NextPageContext) {
       <div className="card card-border">
         <div className="card-header">
           <h2 className="card-title">Valoración general de la participción</h2>
+        </div>
+        <div className="card-body">
+          <EvaluateFair fairId={fair.id} />
         </div>
       </div>
 
