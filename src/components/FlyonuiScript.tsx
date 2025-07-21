@@ -42,7 +42,10 @@ function FlyonuiScript({
       const overlays = document.querySelectorAll<HTMLElement>(".overlay.open");
       for (const $overlay of overlays) {
         const instance = window.HSOverlay.getInstance($overlay, true);
-        instance?.element.close(true);
+        if (!instance) return;
+        if ("element" in instance) {
+          instance?.element.close(true);
+        }
       }
     };
     const originalPushState = window.history.pushState;
@@ -70,7 +73,10 @@ function FlyonuiScript({
     const overlays = document.querySelectorAll<HTMLElement>(".overlay.open");
     for (const $overlay of overlays) {
       const instance = window.HSOverlay.getInstance($overlay, true);
-      instance?.element.close(true);
+      if (!instance) return;
+      if ("element" in instance) {
+        instance?.element.close(true);
+      }
     }
 
     if (

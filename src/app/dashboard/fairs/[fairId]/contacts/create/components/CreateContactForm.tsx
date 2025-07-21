@@ -80,10 +80,13 @@ export default function CreateContactForm({
       const $combobox = document.getElementById("combobox");
       if (!$combobox) return;
       const combobox = window.HSComboBox.getInstance($combobox, true);
-      combobox?.element.on("select", ({ country }: { country: string }) => {
-        form.clearErrors("country");
-        form.setValue("country", country);
-      });
+      if (!combobox) return;
+      if ("element" in combobox) {
+        combobox?.element.on("select", ({ country }: { country: string }) => {
+          form.clearErrors("country");
+          form.setValue("country", country);
+        });
+      }
     }
   }, [loaded, form]);
 

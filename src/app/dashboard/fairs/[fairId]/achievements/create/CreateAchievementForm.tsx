@@ -4,17 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { Notyf } from "notyf";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import type z from "zod";
 import { SubmitButton } from "@/components/SubmitButton";
 import { createAchievement } from "./createAchievement";
-
-export const schema = z.object({
-  content: z
-    .string()
-    .trim()
-    .nonempty("El contenido del logro es obligatorio")
-    .max(1000, "Máximo 1000 caracteres"),
-});
+import { schema } from "./form";
 
 export default function CreateAchievementForm({ fairId }: { fairId: string }) {
   const form = useForm({

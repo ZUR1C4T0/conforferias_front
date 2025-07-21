@@ -14,14 +14,8 @@ export const schema = z
       .string()
       .nonempty("El nombre es requerido")
       .max(100, "Máximo 100 caracteres"),
-    startDate: z
-      .string()
-      .nonempty("La fecha de inicio es requerida")
-      .date("Fecha de inicio inválida"),
-    endDate: z
-      .string()
-      .nonempty("La fecha de fin es requerida")
-      .date("Fecha de fin inválida"),
+    startDate: z.string().nonempty("La fecha de inicio es requerida"),
+    endDate: z.string().nonempty("La fecha de fin es requerida"),
     country: z
       .string()
       .nonempty("El país es requerido")
@@ -32,7 +26,7 @@ export const schema = z
       .nonempty("El número de stand es requerido")
       .max(100, "Máximo 100 caracteres"),
     areaM2: z
-      .number({ invalid_type_error: "El área debe ser un número" })
+      .number({ error: "El área debe ser un número" })
       .positive("El área debe ser mayor a 0")
       .max(1000, "Máximo 1000 m2"),
     totalInvestment: z.optional(
@@ -77,9 +71,12 @@ export default function CreateFairform() {
       const $combobox = document.getElementById("combobox");
       if (!$combobox) return;
       const combobox = window.HSComboBox.getInstance($combobox, true);
-      combobox?.element.on("select", (selectedValue: string) => {
-        form.setValue("country", selectedValue);
-      });
+      if (!combobox) return;
+      if ("element" in combobox) {
+        combobox?.element.on("select", (selectedValue: string) => {
+          form.setValue("country", selectedValue);
+        });
+      }
     }
   }, [loaded, form.setValue]);
 
@@ -104,7 +101,10 @@ export default function CreateFairform() {
       const $modal = document.querySelector<HTMLElement>("#create-fair-modal");
       if (!$modal) return;
       const modal = window.HSOverlay.getInstance($modal, true);
-      modal?.element.on("close", () => form.reset());
+      if (!modal) return;
+      if ("element" in modal) {
+        modal?.element.on("close", () => form.reset());
+      }
     }
   }, [loaded, form.reset]);
 

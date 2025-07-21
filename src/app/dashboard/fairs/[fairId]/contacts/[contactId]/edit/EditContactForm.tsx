@@ -69,9 +69,12 @@ export default function EditContactForm({
       if (!$combobox) return;
 
       const combobox = window.HSComboBox.getInstance($combobox, true);
-      combobox?.element.on("select", ({ country }: { country: string }) => {
-        form.setValue("country", country);
-      });
+      if (!combobox) return;
+      if ("element" in combobox) {
+        combobox?.element.on("select", ({ country }: { country: string }) => {
+          form.setValue("country", country);
+        });
+      }
     }
   }, [loaded, form.setValue]);
 

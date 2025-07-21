@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import type z from "zod";
 import { secureFetch } from "@/lib/axios";
-import type { schema } from "./CreateCompetitorForm";
+import type { schema } from "./form";
 
 export async function createCompetitor(
   fairId: string,

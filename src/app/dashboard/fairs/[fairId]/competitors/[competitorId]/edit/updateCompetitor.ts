@@ -2,7 +2,7 @@
 
 import type z from "zod";
 import { secureFetch } from "@/lib/axios";
-import type { schema } from "./EditCompetitorForm";
+import type { schema } from "./form";
 
 export async function updateCompetitor(
   competitorId: string,

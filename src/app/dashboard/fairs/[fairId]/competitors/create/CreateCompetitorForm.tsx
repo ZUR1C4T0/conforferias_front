@@ -6,29 +6,12 @@ import { useRouter } from "next/navigation";
 import { Notyf } from "notyf";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import type z from "zod";
 import countries from "@/assets/countries.json";
 import { SubmitButton } from "@/components/SubmitButton";
 import { useFlyonUI } from "@/hooks/useFlyonUI";
 import { createCompetitor } from "./createCompetitor";
-
-export const schema = z.object({
-  company: z.string().nonempty("Nombre es obligatorio"),
-  country: z.string().nonempty("País es obligatorio"),
-  city: z.string().nullable(),
-  featuredProducts: z.string().trim().nonempty("Campo obligatorio"),
-  strengths: z.string().trim().nonempty("Campo obligatorio"),
-  weaknesses: z.string().trim().nonempty("Campo obligatorio"),
-});
-
-const defaultValues: z.infer<typeof schema> = {
-  company: "",
-  country: "",
-  city: null,
-  featuredProducts: "",
-  strengths: "",
-  weaknesses: "",
-};
+import { defaultValues, schema } from "./form";
 
 export default function CreateCompetitorForm({ fairId }: { fairId: string }) {
   const { loaded } = useFlyonUI();
@@ -44,9 +27,12 @@ export default function CreateCompetitorForm({ fairId }: { fairId: string }) {
       const $combobox = document.getElementById("country-combobox");
       if (!$combobox) return;
       const combobox = window.HSComboBox.getInstance($combobox, true);
-      combobox?.element.on("select", ({ country }: { country: string }) => {
-        form.setValue("country", country);
-      });
+      if (!combobox) return;
+      if ("element" in combobox) {
+        combobox?.element.on("select", ({ country }: { country: string }) => {
+          form.setValue("country", country);
+        });
+      }
     }
   }, [loaded, form.setValue]);
 

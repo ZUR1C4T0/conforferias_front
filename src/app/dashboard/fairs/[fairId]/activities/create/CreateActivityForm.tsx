@@ -5,24 +5,10 @@ import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import { Notyf } from "notyf";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import type z from "zod";
 import { SubmitButton } from "@/components/SubmitButton";
 import { createActivity } from "./createActivity";
-
-export const schema = z.object({
-  type: z.enum(
-    ["CHARLA_TECNICA", "RUEDA_DE_NEGOCIOS", "OTRO"],
-    "Seleccione un tipo de actividad",
-  ),
-  description: z.string().trim().nonempty("Descripción es obligatoria"),
-  attendees: z.number().nullable().optional(),
-});
-
-const defaultValues: z.infer<typeof schema> = {
-  type: "" as "CHARLA_TECNICA" | "RUEDA_DE_NEGOCIOS" | "OTRO",
-  description: "",
-  attendees: null,
-};
+import { defaultValues, schema } from "./form";
 
 export default function CreateActivityForm({ fairId }: { fairId: string }) {
   const router = useRouter();

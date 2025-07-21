@@ -6,17 +6,10 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Notyf } from "notyf";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import type z from "zod";
 import { SubmitButton } from "@/components/SubmitButton";
 import addTrackingNote from "./addTrackingNote";
-
-export const schema = z.object({
-  note: z.string().trim().nonempty("No puedes dejar el campo vacío"),
-});
-
-const defaultValues: z.infer<typeof schema> = {
-  note: "",
-};
+import { defaultValues, schema } from "./form";
 
 export default function AddTrackingPage() {
   const { fairId, contactId } = useParams();
