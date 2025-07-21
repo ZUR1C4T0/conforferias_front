@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { useRouter } from "next/navigation";
 import { Notyf } from "notyf";
 import { useForm } from "react-hook-form";
 import z from "zod";

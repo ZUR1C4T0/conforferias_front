@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import countries from "@/assets/countries.json";
+import { SubmitButton } from "@/components/SubmitButton";
 import { useFlyonUI } from "@/hooks/useFlyonUI";
 
 export const schema = z
@@ -73,8 +74,8 @@ export default function CreateFairform() {
       const combobox = window.HSComboBox.getInstance($combobox, true);
       if (!combobox) return;
       if ("element" in combobox) {
-        combobox?.element.on("select", (selectedValue: string) => {
-          form.setValue("country", selectedValue);
+        combobox?.element.on("select", ({ country }: { country: string }) => {
+          form.setValue("country", country);
         });
       }
     }
@@ -109,7 +110,10 @@ export default function CreateFairform() {
   }, [loaded, form.reset]);
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="grid grid-cols-1 gap-4 lg:grid-cols-2"
+    >
       <div>
         <label className="label-text" htmlFor="name">
           Nombre de la feria
@@ -193,6 +197,7 @@ export default function CreateFairform() {
                 // biome-ignore lint/a11y/noNoninteractiveTabindex: Es un combobox
                 tabIndex={0}
                 data-combo-box-output-item
+                data-combo-box-item-stored-data={`{"country":"${country}"}`}
               >
                 <div className="flex items-center justify-between">
                   <span
@@ -295,20 +300,11 @@ export default function CreateFairform() {
         <span className="helper-text">El tamaño máximo es de 5MB</span>
       </div>
 
-      <button
-        type="submit"
-        className="btn btn-primary btn-block"
-        disabled={form.formState.isSubmitting}
-      >
-        {form.formState.isSubmitting ? (
-          <span className="loading loading-spinner"></span>
-        ) : (
-          <Icon icon="tabler:plus" className="size-5" />
-        )}
-        Crear Feria
-      </button>
-
-      <pre>{JSON.stringify(form.watch(), null, 2)}</pre>
+      <div className="col-span-full">
+        <SubmitButton>
+          <Icon icon="tabler:plus" className="size-5" /> Crear Feria
+        </SubmitButton>
+      </div>
     </form>
   );
 }

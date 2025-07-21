@@ -1,3 +1,4 @@
+import "server-only";
 import type { AxiosRequestConfig } from "axios";
 import axios, { HttpStatusCode, isAxiosError } from "axios";
 import { cookies } from "next/headers";
@@ -51,8 +52,10 @@ export async function secureFetch<T = unknown>(
           },
         });
         return retry.data;
-      } catch {
-        redirect("/login");
+      } catch (err) {
+        if (isAxiosError(err)) {
+          redirect("/login");
+        }
       }
     }
     throw error;

@@ -40,13 +40,7 @@ export const menuItemsByRole: {
     {
       label: "Ferias",
       icon: "tabler:calendar-event",
-      subItems: [
-        {
-          label: "Ferias asignadas",
-          path: "/dashboard/fairs",
-          icon: "tabler:calendar-check",
-        },
-      ],
+      path: "/dashboard/fairs",
     },
   ],
 } as const;

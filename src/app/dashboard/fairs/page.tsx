@@ -25,7 +25,7 @@ export default async function FairsPage() {
 
       <div className="space-y-4">
         {fairs.length === 0 ? (
-          <div className="card mx-auto max-w-xl">
+          <div className="card">
             <div className="card-body justify-center">
               <p className="text-center text-base-content/50">
                 No hay ferias disponibles

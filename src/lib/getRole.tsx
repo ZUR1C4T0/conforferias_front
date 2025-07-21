@@ -5,10 +5,10 @@ import { redirect } from "next/navigation";
 
 export async function getRole(): Promise<Role> {
   const cookiesStore = await cookies();
-  const token = cookiesStore.get("accessToken")?.value;
-  if (!token) {
+  const accessToken = cookiesStore.get("accessToken")?.value;
+  if (!accessToken) {
     return redirect("/login");
   }
-  const payload = jwtDecode<JwtPayload>(token);
+  const payload = jwtDecode<JwtPayload>(accessToken);
   return payload.role;
 }
