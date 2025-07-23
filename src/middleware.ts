@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { refresh } from "./lib/refresh";
 
 export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken")?.value;
@@ -9,42 +10,56 @@ export async function middleware(request: NextRequest) {
   const isPublicRoute = pathname === "/login";
   const isProtectedRoute = pathname.startsWith("/dashboard");
 
-  if (isPublicRoute && accessToken) {
-    return NextResponse.redirect(new URL("/dashboard/fairs", request.url));
+  // Redireccionar al dashboard si la sesión está activa
+  if (isPublicRoute) {
+    if (accessToken) {
+      return NextResponse.redirect(new URL("/dashboard/fairs", request.url));
+    }
+    if (refreshToken) {
+      const newAccessToken = await refresh(refreshToken);
+      if (!newAccessToken) {
+        const res = NextResponse.next();
+        res.cookies.delete("refreshToken");
+        return res;
+      }
+      const res = NextResponse.redirect(
+        new URL("/dashboard/fairs", request.url),
+      );
+      res.cookies.set("accessToken", newAccessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 1, // One hour
+        path: "/",
+      });
+      return res;
+    }
+    return NextResponse.next();
   }
 
   if (isProtectedRoute) {
-    if (!accessToken && refreshToken) {
-      try {
-        const response = await fetch(
-          `${process.env.BACKEND_URL}/auth/refresh`,
-          {
-            method: "POST",
-            body: JSON.stringify({ refreshToken }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          },
-        );
-        const contentType = response.headers.get("Content-Type");
-        if (response.ok && contentType?.includes("json")) {
-          const { accessToken: newAccessToken } = await response.json();
-          const res = NextResponse.next();
-          res.cookies.set("accessToken", newAccessToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 60 * 60, // 1h
-            path: "/",
-          });
-          return res;
-        }
-      } catch {
-        // Falló el intento de refresh → continuar a redirección
-      }
-    }
-    if (!accessToken) {
+    if (!accessToken && !refreshToken) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
+
+    if (!accessToken) {
+      if (refreshToken) {
+        const newAccessToken = await refresh(refreshToken);
+        if (!newAccessToken) {
+          const res = NextResponse.redirect(new URL("/login", request.url));
+          res.cookies.delete("refreshToken");
+          return res;
+        }
+        const res = NextResponse.next();
+        res.cookies.set("accessToken", newAccessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 60 * 60 * 1, // One hour
+          path: "/",
+        });
+        return res;
+      }
+    }
+    return NextResponse.next();
   }
 
   return NextResponse.next();

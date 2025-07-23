@@ -3,6 +3,7 @@ import type { AxiosRequestConfig } from "axios";
 import axios, { HttpStatusCode, isAxiosError } from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { refresh } from "./refresh";
 
 export const axiosInstance = axios.create({
   adapter: "fetch",
@@ -32,8 +33,21 @@ export async function secureFetch<T = unknown>(
   } catch (error) {
     if (
       isAxiosError(error) &&
-      error.response?.status === HttpStatusCode.Unauthorized
+      error.response?.status === HttpStatusCode.Unauthorized &&
+      refreshToken
     ) {
+      const newAccessToken = await refresh(refreshToken);
+      if (!newAccessToken) {
+        cookiesStore.delete("refreshToken");
+        redirect("/login");
+      }
+      cookiesStore.set("accessToken", newAccessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 1, // One hour
+        path: "/",
+      });
+
       try {
         const { data } = await axiosInstance.post("/auth/refresh", {
           refreshToken,
