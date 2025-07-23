@@ -3,23 +3,6 @@ import Link from "next/link";
 import { secureFetch } from "@/lib/axios";
 import AssignRepsForm from "./components/AssignRepsForm";
 
-export interface Representative {
-  id: string;
-  fullName: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
-
-export interface User {
-  id: string;
-  name: string;
-  role: string;
-  email: string;
-}
-
 export default async function AssignRepresentativePage({
   params,
 }: NextPageContext) {

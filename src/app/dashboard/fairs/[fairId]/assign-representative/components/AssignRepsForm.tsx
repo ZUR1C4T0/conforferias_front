@@ -2,11 +2,11 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
+import { Notyf } from "notyf";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { assignRepresentatives } from "../actions/assign-representatives";
-import type { Representative, User } from "../page";
 
 interface Props {
   users: User[];
@@ -38,18 +38,21 @@ export default function AssignRepsForm({ users, representatives }: Props) {
   }, [representatives, form.reset]);
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
+    const notyf = new Notyf();
+    const reprs = data.representatives.map((id) => {
+      return { userId: id };
+    });
     const { error, message } = await assignRepresentatives({
       fairId: fairId as string,
-      representatives: data.representatives.map((id) => ({
-        userId: id,
-      })),
+      representatives: reprs,
     });
     if (!error) {
+      notyf.success(message);
       form.reset({
         representatives: representatives.map((rep) => rep.user.id),
       });
     } else {
-      alert(message);
+      notyf.error(message);
     }
   };
 

@@ -15,9 +15,28 @@ declare global {
 
   type Role = "ADMIN" | "MERCADEO" | "REPRESENTANTE";
 
+  interface User {
+    id: string;
+    name: string;
+    role: Role | string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+
   interface JwtPayload {
     sub: string;
     role: Role;
+  }
+
+  interface Representative {
+    id: string;
+    fullName: string;
+    user: {
+      id: string;
+      name: string;
+      email: string;
+    };
   }
 
   interface Fair {
