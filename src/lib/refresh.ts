@@ -1,19 +1,19 @@
+import { isAxiosError } from "axios";
+import { axiosInstance } from "./axios";
+
 export async function refresh(refreshToken: string) {
   try {
-    const response = await fetch("/api/auth/refresh", {
-      method: "POST",
-      body: JSON.stringify({ refreshToken }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const { data } = await axiosInstance.post("/auth/refresh", {
+      refreshToken,
     });
-    const contentType = response.headers.get("Content-Type");
-    if (response.ok && contentType?.includes("json")) {
-      const { accessToken } = await response.json();
-      return accessToken as string;
+    return data.accessToken;
+  } catch (error) {
+    console.error("Error refreshing token:");
+    if (isAxiosError(error)) {
+      console.error(error.response);
+    } else {
+      console.error(error);
     }
-    throw new Error("Refresh failed");
-  } catch {
     return null;
   }
 }
