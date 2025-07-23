@@ -10,13 +10,6 @@ export interface Representative {
     id: string;
     name: string;
     email: string;
-    position: {
-      id: string;
-      name: string;
-      description: string | null;
-      createdAt: string;
-      updatedAt: string;
-    };
   };
 }
 
@@ -25,10 +18,6 @@ export interface User {
   name: string;
   role: string;
   email: string;
-  position: {
-    id: string;
-    name: string;
-  };
 }
 
 export default async function AssignRepresentativePage({

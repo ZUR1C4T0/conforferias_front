@@ -22,7 +22,6 @@ export const menuItemsByRole: {
       icon: "tabler:calendar-event",
     },
     { label: "Usuarios", path: "/dashboard/users", icon: "tabler:users" },
-    { label: "Cargos", path: "/dashboard/positions", icon: "tabler:id" },
   ],
 
   // --- Menu para MERCADEO ---

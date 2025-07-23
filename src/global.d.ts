@@ -142,13 +142,4 @@ declare global {
     createdAt: string;
     updatedAt: string;
   }
-
-  interface Position {
-    id: string;
-    name: string;
-    description: string | null;
-    _count: {
-      users: number;
-    }
-  }
 }
