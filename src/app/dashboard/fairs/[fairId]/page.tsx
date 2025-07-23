@@ -1,4 +1,3 @@
-
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -138,6 +137,9 @@ export default async function FairPage({ params }: NextPageContext) {
           </Link>
         </div>
         <div className="card-body">
+          <p className="mb-2 text-sm">
+            DAFO de la marca Confortfresh en el evento
+          </p>
           <DAFOTable fairId={fair.id} />
         </div>
       </div>
@@ -160,7 +162,7 @@ export default async function FairPage({ params }: NextPageContext) {
 
       <div className="card card-border">
         <div className="card-header">
-          <h2 className="card-title">Valoración general de la participción</h2>
+          <h2 className="card-title">Valoración general de la feria</h2>
         </div>
         <div className="card-body">
           <EvaluateFair fairId={fair.id} />
@@ -201,7 +203,7 @@ export default async function FairPage({ params }: NextPageContext) {
 
       <div className="card card-border">
         <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Recomendaciones</h2>
+          <h2 className="card-title grow">Recomendaciones X</h2>
           <Link
             href={`./${fairId}/recommendations/create`}
             className="btn btn-primary btn-soft"
