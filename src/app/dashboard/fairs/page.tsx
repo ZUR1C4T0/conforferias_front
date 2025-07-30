@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { secureFetch } from "@/lib/axios";
 import { getRole } from "@/lib/getRole";
-import CreateFairform from "./components/CreateFairform";
 
 export default async function FairsPage() {
   const fairs = await secureFetch<Fair[]>({
@@ -36,8 +35,8 @@ export default async function FairsPage() {
           fairs.map((fair) => (
             <Link
               key={fair.id}
-              className="card hover:-translate-y-1 transition-transform hover:cursor-pointer hover:bg-base-200"
-              href={`/dashboard/fairs/${fair.id}`}
+              href={`./fairs/${fair.id}`}
+              className="card hover:-translate-y-0.5 transition-transform hover:cursor-pointer hover:bg-base-100"
             >
               <div className="card-body">
                 <div className="flex items-center gap-4">
@@ -50,42 +49,16 @@ export default async function FairsPage() {
                   />
                   <div className="grow space-y-2">
                     <h2 className="card-title">{fair.name}</h2>
-                    <span className="badge badge-primary badge-soft rounded-full">
-                      Detalles
-                      <Icon icon="tabler:arrow-right" className="size-5" />
-                    </span>
                   </div>
+                  <span className="badge badge-primary badge-outline rounded-full">
+                    Detalles
+                    <Icon icon="tabler:arrow-right" className="size-5" />
+                  </span>
                 </div>
               </div>
             </Link>
           ))
         )}
-      </div>
-
-      {/* --- Modals --- */}
-      <div
-        id="create-fair-modal"
-        className="overlay modal modal-middle hidden overlay-open:opacity-100 overlay-open:duration-300"
-        role="dialog"
-        tabIndex={-1}
-      >
-        <div className="modal-dialog overlay-open:opacity-100 overlay-open:duration-300">
-          <div className="modal-content">
-            <div className="modal-header">
-              <div className="modal-title">Crear feria</div>
-              <button
-                type="button"
-                className="btn btn-text btn-circle"
-                data-overlay="#create-fair-modal"
-              >
-                <Icon icon="tabler:x" className="size-5" />
-              </button>
-            </div>
-            <div className="modal-body pt-0">
-              <CreateFairform />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

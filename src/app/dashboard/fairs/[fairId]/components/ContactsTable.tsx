@@ -19,7 +19,7 @@ export default async function ContactsTable({ fairId }: { fairId: string }) {
             <th>Perfil</th>
             <th>Potencial</th>
             <th>
-              <i>Ver detalles</i>
+              <i>detalles</i>
             </th>
           </tr>
         </thead>
@@ -43,7 +43,7 @@ export default async function ContactsTable({ fairId }: { fairId: string }) {
               <td>
                 <Link
                   href={`./${fairId}/contacts/${contact.id}`}
-                  className="btn btn-primary btn-soft"
+                  className="btn btn-info btn-soft"
                 >
                   <Icon icon="tabler:arrow-right" className="size-5" />
                 </Link>

@@ -3,7 +3,7 @@ import EvaluateForm from "./EvaluateForm";
 
 export default async function EvaluateFair({ fairId }: { fairId: string }) {
   const evaluation = await secureFetch<Evaluation | null>({
-    url: `/fairs/${fairId}/evaluation`,
+    url: `/fairs/${fairId}/evaluations/own`,
     method: "GET",
   });
 

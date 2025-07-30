@@ -2,7 +2,7 @@ import { secureFetch } from "@/lib/axios";
 
 export default async function TrendsTable({ fairId }: { fairId: string }) {
   const trends = await secureFetch<Trend[]>({
-    url: `/fairs/${fairId}/trends`,
+    url: `/fairs/${fairId}/tendencies`,
     method: "GET",
   });
 

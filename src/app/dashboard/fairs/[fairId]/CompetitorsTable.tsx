@@ -17,7 +17,7 @@ export default async function CompetitorsTable({ fairId }: { fairId: string }) {
             <th>País</th>
             <th>Ciudad</th>
             <th>
-              <i>Ver detalles</i>
+              <i>Detalles</i>
             </th>
           </tr>
         </thead>
@@ -38,7 +38,7 @@ export default async function CompetitorsTable({ fairId }: { fairId: string }) {
               <td>
                 <Link
                   href={`./${fairId}/competitors/${competitor.id}`}
-                  className="btn btn-primary btn-soft"
+                  className="btn btn-info btn-soft"
                 >
                   <Icon icon="tabler:arrow-right" className="size-5" />
                 </Link>

@@ -3,16 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { secureFetch } from "@/lib/axios";
 import { getRole } from "@/lib/getRole";
-import CompetitorsTable from "./CompetitorsTable";
-import AchievementsTable from "./components/AchievementsTable";
-import ActivitiesTable from "./components/ActivitiesTable";
-import ContactsTable from "./components/ContactsTable";
-import DAFOTable from "./components/DAFOTable";
-import EvaluateFair from "./components/EvaluateFair";
-import ImprovementAreasTable from "./components/ImprovementAreasTable";
-import PostFairActionsTable from "./components/PostFairActionsTable";
-import RecommendationsTable from "./components/RecommendationsTable";
-import TrendsTable from "./components/TrendsTable";
+import FairPageMercadeo from "./components/FairPage.mercadeo";
+import FairPageRep from "./components/FairPage.rep";
 
 export default async function FairPage({ params }: NextPageContext) {
   const role = await getRole();
@@ -23,11 +15,23 @@ export default async function FairPage({ params }: NextPageContext) {
   });
 
   const canAssign = role === "ADMIN" || role === "MERCADEO";
-  const canCreate = role === "REPRESENTANTE";
+
+  const renderPage = () => {
+    switch (role) {
+      case "ADMIN":
+        return <FairPageMercadeo fair={fair} />;
+      case "MERCADEO":
+        return <FairPageMercadeo fair={fair} />;
+      case "REPRESENTANTE":
+        return <FairPageRep fair={fair} />;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <div className="col-span-full flex items-start gap-4">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between gap-3">
         <Link href="./" className="btn btn-secondary btn-soft btn-circle">
           <Icon icon="tabler:arrow-left" className="size-5" />
         </Link>
@@ -50,172 +54,7 @@ export default async function FairPage({ params }: NextPageContext) {
         )}
       </div>
 
-      {/* <div className="card">
-        <div className="card-body">
-          <h2 className="card-title">Información general</h2>
-          <p></p>
-        </div>
-      </div> */}
-
-      <div className="card card-border col-span-full">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Contactos</h2>
-          {canCreate && (
-            <Link
-              href={`./${fairId}/contacts/create`}
-              className="btn btn-primary btn-soft"
-            >
-              <Icon icon="tabler:plus" className="size-5" />{" "}
-              <span className="hidden sm:inline">Crear contacto</span>
-            </Link>
-          )}
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
-          <ContactsTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Actividades paralelas</h2>
-          {canCreate && (
-            <Link
-              href={`./${fairId}/activities/create`}
-              className="btn btn-primary btn-soft"
-            >
-              <Icon icon="tabler:plus" className="size-5" />{" "}
-              <span className="hidden 2xl:inline">Crear actividad</span>
-            </Link>
-          )}
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
-          <ActivitiesTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Tendencias observadas</h2>
-          <Link
-            href={`./${fairId}/trends/create`}
-            className="btn btn-primary btn-soft"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden 2xl:inline">Registrar tendencia</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
-          <TrendsTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border col-span-full">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Competidores</h2>
-          <Link
-            href={`./${fairId}/competitors/create`}
-            className="btn btn-primary btn-soft"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden sm:inline">Registrar competidor</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
-          <CompetitorsTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border col-span-full">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">DAFO</h2>
-          <Link
-            href={`./${fairId}/dafo/create`}
-            className="btn btn-primary btn-soft"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden sm:inline">Agregar elemento DAFO</span>
-          </Link>
-        </div>
-        <div className="card-body">
-          <p className="mb-2 text-sm">
-            DAFO de la marca Confortfresh en el evento
-          </p>
-          <DAFOTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border col-span-full">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Acciones Postferia</h2>
-          <Link
-            href={`./${fairId}/post-fair-actions/create`}
-            className="btn btn-primary btn-soft"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden sm:inline">Crear acción</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
-          <PostFairActionsTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">Valoración general de la feria</h2>
-        </div>
-        <div className="card-body">
-          <EvaluateFair fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Principales logros</h2>
-          <Link
-            href={`./${fairId}/achievements/create`}
-            className="btn btn-primary btn-soft"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden sm:inline">Crear logro</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
-          <AchievementsTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Areas de mejora</h2>
-          <Link
-            href={`./${fairId}/improvement-areas/create`}
-            className="btn btn-primary btn-soft"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden 2xl:inline">Crear área de mejora</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
-          <ImprovementAreasTable fairId={fair.id} />
-        </div>
-      </div>
-
-      <div className="card card-border">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">Recomendaciones X</h2>
-          <Link
-            href={`./${fairId}/recommendations/create`}
-            className="btn btn-primary btn-soft"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden 2xl:inline">Crear recomendación</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
-          <RecommendationsTable fairId={fair.id} />
-        </div>
-      </div>
+      {renderPage()}
     </div>
   );
 }

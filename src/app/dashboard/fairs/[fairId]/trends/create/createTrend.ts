@@ -10,7 +10,7 @@ export async function createTrend(
 ) {
   try {
     await secureFetch({
-      url: `/fairs/${fairId}/trends`,
+      url: `/fairs/${fairId}/tendencies`,
       method: "POST",
       data,
     });

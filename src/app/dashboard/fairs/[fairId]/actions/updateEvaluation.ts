@@ -23,9 +23,9 @@ export async function updateEvaluation(
     };
   } catch (error) {
     if (isAxiosError(error)) {
-      console.log(error.response?.data);
+      console.error(error.response?.data);
     } else {
-      console.log(error);
+      console.error(error);
     }
     return {
       success: false,
