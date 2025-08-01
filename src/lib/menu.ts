@@ -15,7 +15,7 @@ export const menuItemsByRole: {
 } = {
   // --- Menu para ADMIN ---
   ADMIN: [
-    { label: "Dashboard", path: "/dashboard", icon: "tabler:home" },
+    // { label: "Dashboard", path: "/dashboard", icon: "tabler:home" },
     {
       label: "Ferias",
       path: "/dashboard/fairs",
@@ -26,7 +26,7 @@ export const menuItemsByRole: {
 
   // --- Menu para MERCADEO ---
   MERCADEO: [
-    { label: "Dashboard", path: "/dashboard", icon: "tabler:home" },
+    // { label: "Dashboard", path: "/dashboard", icon: "tabler:home" },
     {
       label: "Ferias",
       path: "/dashboard/fairs",
