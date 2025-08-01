@@ -2,12 +2,15 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
+import { useRouter } from "next/navigation";
+import { Notyf } from "notyf";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import countries from "@/assets/countries.json";
 import { SubmitButton } from "@/components/SubmitButton";
 import { useFlyonUI } from "@/hooks/useFlyonUI";
+import { createFair } from "./createFair";
 
 export const schema = z
   .object({
@@ -60,6 +63,7 @@ const defaultValues: z.infer<typeof schema> = {
 };
 
 export default function CreateFairform() {
+  const router = useRouter();
   const { loaded } = useFlyonUI();
   const form = useForm({
     resolver: zodResolver(schema),
@@ -82,18 +86,13 @@ export default function CreateFairform() {
   }, [loaded, form.setValue]);
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const formData = new FormData();
-    for (const [key, value] of Object.entries(data)) {
-      if (key === "logo" && value) formData.append(key, value[0]);
-      else if (value) formData.append(key, value.toString());
-    }
-    const resp = await fetch("/api/fairs", {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-    });
-    if (resp.ok) {
-      form.reset();
+    const notyf = new Notyf();
+    const result = await createFair(data);
+    if (!result.success) {
+      return notyf.error(result.message);
+    } else {
+      notyf.success(result.message);
+      router.push("./");
     }
   };
 

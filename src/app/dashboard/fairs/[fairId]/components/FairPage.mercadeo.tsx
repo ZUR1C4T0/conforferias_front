@@ -19,7 +19,6 @@ const activities = [
 ];
 
 export default function FairPageMercadeo({ fair }: { fair: Fair }) {
-  console.log(fair);
   return (
     <>
       {/* Primera fila de métricas */}

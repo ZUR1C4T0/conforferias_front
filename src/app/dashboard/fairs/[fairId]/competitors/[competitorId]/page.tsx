@@ -5,9 +5,9 @@ import { secureFetch } from "@/lib/axios";
 export default async function CompetitorDetailsPage({
   params,
 }: NextPageContext) {
-  const { competitorId } = await params;
+  const { fairId, competitorId } = await params;
   const competitor = await secureFetch<Competitor>({
-    url: `/competitors/${competitorId}`,
+    url: `/fairs/${fairId}/competitors/${competitorId}`,
     method: "GET",
   });
 

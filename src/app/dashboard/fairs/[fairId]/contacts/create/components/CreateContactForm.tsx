@@ -10,14 +10,9 @@ import z from "zod";
 import countries from "@/assets/countries.json";
 import { SubmitButton } from "@/components/SubmitButton";
 import { useFlyonUI } from "@/hooks/useFlyonUI";
+import { Amount, AmountLabels, Potential } from "@/lib/constants";
 import { createContact } from "../actions/createContact";
 import type { Profile } from "../page";
-
-enum Potential {
-  BAJO = "BAJO",
-  MEDIO = "MEDIO",
-  ALTO = "ALTO",
-}
 
 export const schema = z.object({
   name: z.string().nonempty("Nombre es obligatorio"),
@@ -31,8 +26,8 @@ export const schema = z.object({
   companyNit: z.string().nullable(),
   country: z.string().nonempty("País es obligatorio"),
   city: z.string().nullable(),
-  interestProducts: z.string().nullable(),
   estimatedPotential: z.enum(Potential),
+  amount: z.enum(Amount).optional().nullable(),
 });
 
 export default function CreateContactForm({
@@ -65,8 +60,8 @@ export default function CreateContactForm({
     companyNit: null,
     country: "",
     city: null,
-    interestProducts: null,
     estimatedPotential: Potential.BAJO,
+    amount: null,
   };
 
   const form = useForm({
@@ -112,6 +107,12 @@ export default function CreateContactForm({
       onSubmit={form.handleSubmit(onSubmit)}
       className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
     >
+      <div className="col-span-full">
+        <h2 className="font-semibold text-base-content/60 text-xl">
+          Información básica
+        </h2>
+      </div>
+
       <div>
         <label htmlFor="name" className="label-text">
           Nombre completo
@@ -155,6 +156,12 @@ export default function CreateContactForm({
         <span className="helper-text">
           {form.formState.errors.phone?.message}
         </span>
+      </div>
+
+      <div className="col-span-full">
+        <h2 className="font-semibold text-base-content/60 text-xl">
+          Información Profecional
+        </h2>
       </div>
 
       <div>
@@ -225,6 +232,12 @@ export default function CreateContactForm({
         <span className="helper-text">
           {form.formState.errors.companyNit?.message}
         </span>
+      </div>
+
+      <div className="col-span-full">
+        <h2 className="font-semibold text-base-content/60 text-xl">
+          Información de ubicación
+        </h2>
       </div>
 
       <div>
@@ -302,6 +315,12 @@ export default function CreateContactForm({
       </div>
 
       <div className="col-span-full">
+        <h2 className="font-semibold text-base-content/60 text-xl">
+          Potencial y negociación
+        </h2>
+      </div>
+
+      <div className="col-span-full">
         <span className="mb-1 text-base text-base-content">
           Potencial estimado
         </span>
@@ -322,15 +341,27 @@ export default function CreateContactForm({
         </ul>
       </div>
 
-      <div className="col-span-full">
-        <label className="label-text" htmlFor="interestProducts">
-          Productos de interés (Opcional)
-        </label>
-        <textarea
-          id="interestProducts"
-          className="textarea"
-          rows={5}
-        ></textarea>
+      <div className="col-span-full mt-4">
+        <span className="mb-1 text-base text-base-content">
+          Valor estimado de la negociación (Opcional)
+        </span>
+        <ul className="flex w-full flex-col divide-base-content/25 rounded-box border border-base-content/25 *:w-full *:cursor-pointer max-sm:divide-y sm:flex-row sm:divide-x">
+          {Object.values(Amount).map((amount) => (
+            <li key={amount}>
+              <label className="flex cursor-pointer items-center gap-2 p-3 hover:bg-base-content/5 active:bg-base-content/10">
+                <input
+                  type="radio"
+                  className="radio radio-primary ms-3"
+                  value={amount}
+                  {...form.register("amount")}
+                />
+                <span className="label-text text-base">
+                  {AmountLabels[amount]}
+                </span>
+              </label>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="col-span-full">

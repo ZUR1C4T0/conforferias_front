@@ -5,12 +5,13 @@ import { secureFetch } from "@/lib/axios";
 import type { schema } from "./EditContactForm";
 
 export async function updateContact(
+  fairId: string,
   contactId: string,
   data: z.infer<typeof schema>,
 ) {
   try {
     await secureFetch({
-      url: `/contacts/${contactId}`,
+      url: `/fairs/${fairId}/contacts/${contactId}`,
       method: "PATCH",
       data,
     });
@@ -20,7 +21,7 @@ export async function updateContact(
     console.error("Error updating contact:", error);
     return {
       success: false,
-      message: "Error al actualizar el contacto. Por favor intente nuevamente.",
+      message: "Error al actualizar el contacto.",
     };
   }
 }

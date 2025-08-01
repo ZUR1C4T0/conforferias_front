@@ -24,7 +24,7 @@ export async function createActivity(
     console.error("Error creating activity:", error);
     return {
       success: false,
-      message: "Error al crear la actividad. Por favor intente nuevamente.",
+      message: "Error al crear la actividad.",
     };
   }
 }

@@ -59,11 +59,31 @@ declare global {
 
   interface Contact {
     id: string;
+    fairId: string;
     name: string;
-    company: string;
-    profile: { name: string };
-    otherProfile: string;
+    company: string | null;
+    companyNit: string | null;
+    email: string;
+    phone: string;
+    profileId: string;
+    otherProfile: string | null;
+    country: string;
+    city: string | null;
     estimatedPotential: Potential;
+    createdById: string;
+    createdAt: string;
+    updatedAt: string;
+    profile: {
+      id: string;
+      name: string;
+      description: string | null;
+    };
+    sale: Sale | null;
+  }
+
+  interface Sale {
+    id: string;
+    amount: Amount;
   }
 
   interface Activity {

@@ -31,7 +31,7 @@ export async function createPostFairAction(
     }
     return {
       success: false,
-      message: "Error al crear la acción. Por favor intente nuevamente.",
+      message: "Error al crear la acción.",
     };
   }
 }

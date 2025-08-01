@@ -24,7 +24,7 @@ export async function createCompetitor(
     console.error("Error creating competitor:", error);
     return {
       success: false,
-      message: "Error al crear el competidor. Por favor intente nuevamente.",
+      message: "Error al crear el competidor.",
     };
   }
 }

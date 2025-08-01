@@ -24,7 +24,7 @@ export default async function addTrackingNote(
     return {
       success: false,
       message:
-        "Error al agregar la nota de seguimiento. Por favor intente nuevamente.",
+        "Error al agregar la nota de seguimiento.",
     };
   }
 }

@@ -72,6 +72,10 @@ export async function secureFetch<T = unknown>(
         }
       }
     }
+    if (isAxiosError(error)) {
+      console.error(error.response?.data);
+      throw error.response;
+    }
     throw error;
   }
 }

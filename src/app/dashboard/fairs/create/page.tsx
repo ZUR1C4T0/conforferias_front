@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import CreateFairform from "../components/CreateFairform";
+import CreateFairform from "./CreateFairForm";
 
 export default function CreateFairPage() {
   return (

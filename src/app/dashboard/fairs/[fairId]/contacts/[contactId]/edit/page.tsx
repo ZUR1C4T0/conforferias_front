@@ -3,14 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { secureFetch } from "@/lib/axios";
 import type { Profile } from "../../create/page";
-import type { Contact } from "../page";
 import EditContactForm from "./EditContactForm";
 
 export default async function EditContactPage({ params }: NextPageContext) {
   const { contactId, fairId } = await params;
   const [contact, profiles] = await Promise.all([
     secureFetch<Contact>({
-      url: `/contacts/${contactId}`,
+      url: `/fairs/${fairId}/contacts/${contactId}`,
       method: "GET",
     }),
     secureFetch<Profile[]>({

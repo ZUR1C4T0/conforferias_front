@@ -23,7 +23,7 @@ export async function createTrend(
     console.error("Error creating trend:", error);
     return {
       success: false,
-      message: "Error al crear la tendencia. Por favor intente nuevamente.",
+      message: "Error al crear la tendencia.",
     };
   }
 }

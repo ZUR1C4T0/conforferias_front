@@ -23,7 +23,7 @@ export async function createDafoElement(
     console.error("Error creating DAFO element:", error);
     return {
       success: false,
-      message: "Error al crear el elemento DAFO. Por favor intente nuevamente.",
+      message: "Error al crear el elemento DAFO.",
     };
   }
 }

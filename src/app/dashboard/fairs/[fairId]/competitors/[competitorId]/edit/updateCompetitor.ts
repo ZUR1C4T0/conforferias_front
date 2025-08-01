@@ -23,8 +23,7 @@ export async function updateCompetitor(
     console.error("Error updating competitor:", error);
     return {
       success: false,
-      message:
-        "Error al actualizar el competidor. Por favor intente nuevamente.",
+      message: "Error al actualizar el competidor.",
     };
   }
 }

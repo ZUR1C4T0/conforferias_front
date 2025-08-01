@@ -1,42 +1,13 @@
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { secureFetch } from "@/lib/axios";
-import { formatDate } from "@/utils/formatDate";
+import { Amount } from "@/lib/constants";
 import { PotentialBadge } from "../../components/PotentialBadge";
 
-export interface Contact {
-  id: string;
-  fairId: string;
-  name: string;
-  email: string;
-  phone: string;
-  profileId: string;
-  otherProfile: string | null;
-  company: string | null;
-  companyNit: string | null;
-  country: string;
-  city: string | null;
-  interestProducts: string | null;
-  estimatedPotential: string;
-  createdById: string;
-  createdAt: string;
-  updatedAt: string;
-  profile: {
-    id: string;
-    name: string;
-    description: string | null;
-  };
-  tracking: {
-    id: string;
-    note: string;
-    createdAt: string;
-  }[];
-}
-
 export default async function ContactPage({ params }: NextPageContext) {
-  const { contactId } = await params;
+  const { fairId, contactId } = await params;
   const contact = await secureFetch<Contact>({
-    url: `/contacts/${contactId}`,
+    url: `/fairs/${fairId}/contacts/${contactId}`,
     method: "GET",
   });
 
@@ -60,7 +31,7 @@ export default async function ContactPage({ params }: NextPageContext) {
           {/* Tarjeta de Información Básica */}
           <div className="card card-border">
             <div className="card-header">
-              <h2 className="card-title">Información del Contacto</h2>
+              <h2 className="card-title">Información básica</h2>
             </div>
             <div className="card-body grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="col-span-full">
@@ -103,7 +74,9 @@ export default async function ContactPage({ params }: NextPageContext) {
               </div>
             </div>
           </div>
+        </div>
 
+        <div className="space-y-6">
           {/* Tarjeta de Información Empresarial */}
           {(contact.company || contact.companyNit) && (
             <div className="card card-border">
@@ -131,10 +104,7 @@ export default async function ContactPage({ params }: NextPageContext) {
               </div>
             </div>
           )}
-        </div>
 
-        {/* Sección de Ubicación y Productos */}
-        <div className="space-y-6">
           {/* Tarjeta de Ubicación */}
           <div className="card card-border">
             <div className="card-header">
@@ -158,58 +128,34 @@ export default async function ContactPage({ params }: NextPageContext) {
               )}
             </div>
           </div>
+        </div>
 
-          {/* Tarjeta de Productos de Interés */}
-          {contact.interestProducts && (
+        {/* Sección de Venta */}
+        {contact.sale && (
+          <div className="space-y-6">
             <div className="card card-border">
               <div className="card-header">
-                <h2 className="card-title">Productos de Interés</h2>
+                <h2 className="card-title">Venta</h2>
               </div>
-              <div className="card-body">
-                <p className="whitespace-pre-line">
-                  {contact.interestProducts}
-                </p>
+              <div className="card-body grid grid-cols-1 gap-4">
+                <div>
+                  <h3 className="font-medium text-base-content/60 text-sm">
+                    Valor estimado
+                  </h3>
+                  <p className="text-base">
+                    {contact.sale?.amount === Amount.BAJO
+                      ? "Entre 1 y 7 millones"
+                      : contact.sale?.amount === Amount.MEDIO
+                        ? "Entre 7 y 20 millones"
+                        : contact.sale?.amount === Amount.ALTO
+                          ? "Entre 20 y 50 millones"
+                          : "Más de 50 millones"}
+                  </p>
+                </div>
               </div>
             </div>
-          )}
-        </div>
-      </div>
-
-      {/* Historial de Seguimiento */}
-      <div className="card card-border">
-        <div className="card-header flex items-center justify-between">
-          <h2 className="card-title">Historial de Seguimiento</h2>
-          <Link
-            href={`./${contact.id}/add-tracking`}
-            className="btn btn-primary btn-sm"
-          >
-            <Icon icon="tabler:plus" className="size-4" />{" "}
-            <span className="hidden sm:inline">Nueva Nota</span>
-          </Link>
-        </div>
-        <div className="card-body">
-          {contact.tracking.length === 0 ? (
-            <p className="py-4 text-center text-base-content/60">
-              No hay registros de seguimiento
-            </p>
-          ) : (
-            <ul className="space-y-4">
-              {contact.tracking.map((item) => (
-                <li
-                  key={item.id}
-                  className="border-base-content/10 border-b pb-4 last:border-0"
-                >
-                  <div className="flex items-start justify-between">
-                    <p className="whitespace-pre-line">{item.note}</p>
-                    <span className="ml-4 shrink-0 text-base-content/60 text-sm">
-                      {formatDate(item.createdAt)}
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
