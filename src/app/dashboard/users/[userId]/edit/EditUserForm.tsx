@@ -32,8 +32,7 @@ export function EditUserForm({ user }: { user: User }) {
     const result = await updateUser(user.id, data);
     if (result.success) {
       notyf.success(result.message);
-      router.push("./");
-      router.refresh();
+      router.push("../");
     } else {
       notyf.error(result.message);
     }
