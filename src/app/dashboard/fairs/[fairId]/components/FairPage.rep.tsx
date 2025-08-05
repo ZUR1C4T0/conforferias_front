@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import CompetitorsTable from "../CompetitorsTable";
 import AchievementsTable from "./AchievementsTable";
+import CompetitorsTable from "./CompetitorsTable";
 import ContactsTable from "./ContactsTable";
 import DAFOTable from "./DAFOTable";
 import EvaluateFair from "./EvaluateFair";

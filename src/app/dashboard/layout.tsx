@@ -104,8 +104,8 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
         </div>
       </aside>
 
-      <main className="container overflow-y-auto py-8 lg:z-0 lg:ms-72 lg:h-[calc(100dvh-4rem)] lg:w-[calc(100dvw-18rem)]">
-        {children}
+      <main className="overflow-y-auto lg:z-0 lg:ms-72 lg:h-[calc(100dvh-4rem)] lg:w-[calc(100dvw-18rem)]">
+        <div className="container py-8">{children}</div>
       </main>
     </>
   );
