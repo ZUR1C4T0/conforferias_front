@@ -5,12 +5,13 @@ import { secureFetch } from "@/lib/axios";
 import type { schema } from "./form";
 
 export async function updateCompetitor(
+  fairId: string,
   competitorId: string,
   data: z.infer<typeof schema>,
 ) {
   try {
     await secureFetch({
-      url: `/competitors/${competitorId}`,
+      url: `/fairs/${fairId}/competitors/${competitorId}`,
       method: "PATCH",
       data,
     });

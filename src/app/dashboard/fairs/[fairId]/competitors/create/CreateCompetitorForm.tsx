@@ -185,7 +185,7 @@ export default function CreateCompetitorForm({ fairId }: { fairId: string }) {
         </span>
       </div>
 
-      <div className="col-span-full ">
+      <div className="col-span-full">
         <SubmitButton>
           <Icon icon="tabler:check" className="size-4" /> Guardar Competidor
         </SubmitButton>

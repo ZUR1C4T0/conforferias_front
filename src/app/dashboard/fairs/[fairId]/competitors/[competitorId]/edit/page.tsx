@@ -4,9 +4,9 @@ import { secureFetch } from "@/lib/axios";
 import EditCompetitorForm from "./EditCompetitorForm";
 
 export default async function EditCompetitorPage({ params }: NextPageContext) {
-  const { competitorId } = await params;
+  const { fairId, competitorId } = await params;
   const competitor = await secureFetch<Competitor>({
-    url: `/competitors/${competitorId}`,
+    url: `/fairs/${fairId}/competitors/${competitorId}`,
     method: "GET",
   });
 
@@ -19,7 +19,7 @@ export default async function EditCompetitorPage({ params }: NextPageContext) {
         <h1 className="font-semibold text-xl sm:text-3xl">Editar Competidor</h1>
       </div>
 
-      <EditCompetitorForm competitor={competitor} />
+      <EditCompetitorForm fairId={fairId} competitor={competitor} />
     </div>
   );
 }

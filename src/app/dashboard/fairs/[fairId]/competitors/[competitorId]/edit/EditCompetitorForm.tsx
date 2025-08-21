@@ -13,8 +13,10 @@ import { schema } from "./form";
 import { updateCompetitor } from "./updateCompetitor";
 
 export default function EditCompetitorForm({
+  fairId,
   competitor,
 }: {
+  fairId: string;
   competitor: Competitor;
 }) {
   const { loaded } = useFlyonUI();
@@ -49,7 +51,7 @@ export default function EditCompetitorForm({
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     const notyf = new Notyf();
-    const result = await updateCompetitor(competitor.id, data);
+    const result = await updateCompetitor(fairId, competitor.id, data);
     if (result.success) {
       notyf.success(result.message);
       router.push("./");
