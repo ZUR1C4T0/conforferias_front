@@ -73,17 +73,18 @@ export default function CreateFairform() {
 
   useEffect(() => {
     if (loaded) {
-      const $combobox = document.getElementById("combobox");
+      const $combobox = document.getElementById("country-combobox");
       if (!$combobox) return;
       const combobox = window.HSComboBox.getInstance($combobox, true);
       if (!combobox) return;
       if ("element" in combobox) {
         combobox?.element.on("select", ({ country }: { country: string }) => {
+          form.clearErrors("country");
           form.setValue("country", country);
         });
       }
     }
-  }, [loaded, form.setValue]);
+  }, [loaded, form]);
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     const notyf = new Notyf();
@@ -163,7 +164,7 @@ export default function CreateFairform() {
           País
         </label>
         <div
-          id="combobox"
+          id="country-combobox"
           className="relative"
           data-combo-box='{"minSearchLength":1, "outputEmptyTemplate": "<div class=\"dropdown-item\">No se encontraron resultados...</div>"}'
         >
@@ -173,8 +174,6 @@ export default function CreateFairform() {
               id="country"
               className={`input ${form.formState.errors.country ? "is-invalid" : ""}`}
               placeholder="Buscar país"
-              role="combobox"
-              aria-expanded="false"
               data-combo-box-input
               {...form.register("country")}
             />

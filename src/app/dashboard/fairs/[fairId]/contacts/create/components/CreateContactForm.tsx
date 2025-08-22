@@ -72,7 +72,7 @@ export default function CreateContactForm({
 
   useEffect(() => {
     if (loaded) {
-      const $combobox = document.getElementById("combobox");
+      const $combobox = document.getElementById("country-combobox");
       if (!$combobox) return;
       const combobox = window.HSComboBox.getInstance($combobox, true);
       if (!combobox) return;
@@ -245,7 +245,7 @@ export default function CreateContactForm({
           País
         </label>
         <div
-          id="combobox"
+          id="country-combobox"
           className="relative"
           data-combo-box='{"minSearchLength":1, "outputEmptyTemplate": "<div class=\"dropdown-item\">No se encontraron resultados...</div>"}'
         >
