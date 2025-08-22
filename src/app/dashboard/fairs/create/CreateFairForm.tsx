@@ -97,18 +97,6 @@ export default function CreateFairform() {
     }
   };
 
-  useEffect(() => {
-    if (loaded) {
-      const $modal = document.querySelector<HTMLElement>("#create-fair-modal");
-      if (!$modal) return;
-      const modal = window.HSOverlay.getInstance($modal, true);
-      if (!modal) return;
-      if ("element" in modal) {
-        modal?.element.on("close", () => form.reset());
-      }
-    }
-  }, [loaded, form.reset]);
-
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
