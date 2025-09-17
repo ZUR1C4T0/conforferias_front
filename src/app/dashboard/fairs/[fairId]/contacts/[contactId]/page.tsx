@@ -143,11 +143,11 @@ export default async function ContactPage({ params }: NextPageContext) {
                     Valor estimado
                   </h3>
                   <p className="text-base">
-                    {contact.sale?.amount === Amount.BAJO
+                    {contact.sale?.amount === Amount.BAJA
                       ? "Entre 1 y 7 millones"
                       : contact.sale?.amount === Amount.MEDIO
                         ? "Entre 7 y 20 millones"
-                        : contact.sale?.amount === Amount.ALTO
+                        : contact.sale?.amount === Amount.ALTA
                           ? "Entre 20 y 50 millones"
                           : "Más de 50 millones"}
                   </p>

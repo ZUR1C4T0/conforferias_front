@@ -25,15 +25,15 @@ export enum Potential {
 }
 
 export enum Amount {
-  BAJO = "BAJO",
+  BAJA = "BAJA",
   MEDIO = "MEDIO",
-  ALTO = "ALTO",
+  ALTA = "ALTA",
   SUPERIOR = "SUPERIOR",
 }
 
 export const AmountLabels = {
-  [Amount.BAJO]: "1-7 millones",
+  [Amount.BAJA]: "1-7 millones",
   [Amount.MEDIO]: "7-20 millones",
-  [Amount.ALTO]: "20-50 millones",
+  [Amount.ALTA]: "20-50 millones",
   [Amount.SUPERIOR]: "+50 millones",
 };
