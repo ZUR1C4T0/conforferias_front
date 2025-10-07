@@ -101,6 +101,7 @@ export default function EditCompetitorForm({
                   className={`input ${form.formState.errors.country ? "is-invalid" : ""}`}
                   defaultValue={competitor.country}
                   data-combo-box-input
+                  {...form.register("country")}
                 />
                 <Icon
                   icon="tabler:caret-up-down"

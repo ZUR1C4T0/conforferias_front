@@ -246,6 +246,7 @@ export default function EditContactForm({
                   placeholder="Buscar país..."
                   defaultValue={contact.country}
                   data-combo-box-input
+                  {...form.register("country")}
                 />
                 <Icon
                   icon="tabler:caret-up-down"

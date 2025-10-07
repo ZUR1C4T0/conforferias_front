@@ -84,6 +84,7 @@ export default function CreateCompetitorForm({ fairId }: { fairId: string }) {
               className={`input ${form.formState.errors.country ? "is-invalid" : ""}`}
               placeholder="Buscar país..."
               data-combo-box-input
+              {...form.register("country")}
             />
             <Icon
               icon="tabler:caret-up-down"
