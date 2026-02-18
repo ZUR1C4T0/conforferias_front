@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 
 export async function GET(request: Request) {
   const cookieStore = await cookies();
@@ -10,9 +10,9 @@ export async function GET(request: Request) {
 
   if (accessToken) {
     // If authenticated, redirect to the intended page (e.g., dashboard)
-    return NextResponse.redirect(new URL(redirectTo, request.url));
+    return redirect(redirectTo);
   } else {
     // If not authenticated, redirect to the login page
-    return NextResponse.redirect(new URL("/login", request.url));
+    return redirect("/login");
   }
 }

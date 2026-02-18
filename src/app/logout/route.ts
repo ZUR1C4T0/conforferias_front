@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
-import { type NextRequest, NextResponse } from "next/server";
+import { redirect } from "next/navigation";
+import type { NextRequest } from "next/server";
 import { axiosInstance } from "@/lib/axios";
 
-export async function GET(request: NextRequest) {
+export async function GET(_: NextRequest) {
   const cookiesStore = await cookies();
   try {
     const token = cookiesStore.get("accessToken")?.value;
@@ -17,5 +18,5 @@ export async function GET(request: NextRequest) {
     cookiesStore.delete("accessToken");
     cookiesStore.delete("refreshToken");
   }
-  return NextResponse.redirect(new URL("/login", request.url));
+  return redirect("/login");
 }
