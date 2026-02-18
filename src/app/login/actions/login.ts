@@ -29,7 +29,9 @@ export async function login(formData: FormData): Promise<string | undefined> {
       path: "/",
     });
   } catch (error) {
+    console.error("Error during login", error);
     if (isAxiosError(error) && error.response) {
+      console.error(error.response.data);
       return "Credenciales incorrectas";
     }
     return "Ocurrió un error inesperado durante el inicio de sesión.";
