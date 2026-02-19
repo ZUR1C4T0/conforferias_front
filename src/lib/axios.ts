@@ -31,51 +31,30 @@ export async function secureFetch<T = unknown>(
     });
     return response.data;
   } catch (error) {
+    if (!isAxiosError(error)) throw error;
     if (
-      isAxiosError(error) &&
       error.response?.status === HttpStatusCode.Unauthorized &&
       refreshToken
     ) {
       const newAccessToken = await refresh(refreshToken);
       if (!newAccessToken) {
-        cookiesStore.delete("refreshToken");
         redirect("/login");
       }
-      cookiesStore.set("accessToken", newAccessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 60 * 1, // One hour
-        path: "/",
-      });
-
       try {
-        const { data } = await axiosInstance.post("/auth/refresh", {
-          refreshToken,
-        });
-        cookiesStore.set("accessToken", data.accessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 60 * 60 * 1, // One hour
-          path: "/",
-        });
         const retry = await axiosInstance({
           ...config,
           headers: {
             ...config.headers,
-            Authorization: `Bearer ${data.accessToken}`,
+            Authorization: `Bearer ${newAccessToken}`,
           },
         });
         return retry.data;
-      } catch (err) {
-        if (isAxiosError(err)) {
-          redirect("/login");
-        }
+      } catch {
+        redirect("/login");
       }
     }
-    if (isAxiosError(error)) {
-      console.error(error.response?.data);
-      throw error.response;
-    }
-    throw error;
+
+    console.error(error.response?.data);
+    throw error.response;
   }
 }

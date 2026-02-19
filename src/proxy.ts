@@ -41,23 +41,21 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (!accessToken) {
-      if (refreshToken) {
-        const newAccessToken = await refresh(refreshToken);
-        if (!newAccessToken) {
-          const res = NextResponse.redirect(new URL("/login", request.url));
-          res.cookies.delete("refreshToken");
-          return res;
-        }
-        const res = NextResponse.next();
-        res.cookies.set("accessToken", newAccessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 60 * 60 * 1, // One hour
-          path: "/",
-        });
+    if (!accessToken && refreshToken) {
+      const newAccessToken = await refresh(refreshToken);
+      if (!newAccessToken) {
+        const res = NextResponse.redirect(new URL("/login", request.url));
+        res.cookies.delete("refreshToken");
         return res;
       }
+      const res = NextResponse.next();
+      res.cookies.set("accessToken", newAccessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 1, // One hour
+        path: "/",
+      });
+      return res;
     }
     return NextResponse.next();
   }
