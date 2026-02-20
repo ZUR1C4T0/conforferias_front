@@ -1,42 +1,42 @@
 "use server";
-
-import { isAxiosError } from "axios";
+import { HttpStatusCode, isAxiosError } from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { axiosInstance } from "@/lib/axios";
 
-export async function login(formData: FormData): Promise<string | undefined> {
-  const email = formData.get("email");
-  const password = formData.get("password");
+export type LoginState = {
+  error?: string;
+} | null;
 
+export async function loginAction(_prevState: LoginState, formData: FormData) {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
   try {
     const { data } = await axiosInstance.post("/auth/login", {
       email,
       password,
     });
-
     const cookiesStore = await cookies();
     cookiesStore.set("accessToken", data.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 1, // One hour
+      maxAge: 60 * 60 * 1,
       path: "/",
     });
     cookiesStore.set("refreshToken", data.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 5, // Five days
+      maxAge: 60 * 60 * 24 * 5,
       path: "/",
     });
   } catch (error) {
-    console.error("Error during login", error);
-    if (isAxiosError(error) && error.response) {
-      console.error(error.response.data);
-      return "Credenciales incorrectas";
+    if (
+      isAxiosError(error) &&
+      error.response?.status === HttpStatusCode.Unauthorized
+    ) {
+      return { error: "Credenciales inválidas" };
     }
-    return "Ocurrió un error inesperado durante el inicio de sesión.";
+    return { error: "Error inesperado durante el inicio de sesión" };
   }
-
-  // `redirect` no se puede usar dentro de un try/catch
   redirect("/dashboard/fairs");
 }
