@@ -35,6 +35,7 @@ export function LoginForm({
                 <FieldLabel htmlFor="email">Correo Electrónico</FieldLabel>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="correo@confortfresh.com"
                   autoComplete="email"
@@ -46,6 +47,7 @@ export function LoginForm({
                 <FieldLabel htmlFor="password">Contraseña</FieldLabel>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="********"
                   autoComplete="current-password"
