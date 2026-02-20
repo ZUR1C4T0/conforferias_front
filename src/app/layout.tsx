@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="es" data-theme="corporate">
-      <body style={publicSans.style} className="antialiased">
+    <html lang="es">
+      <body style={publicSans.style} className="dark antialiased">
         <FlyonUIProvider>{children}</FlyonUIProvider>
       </body>
     </html>
