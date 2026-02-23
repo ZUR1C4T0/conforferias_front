@@ -17,7 +17,10 @@
     "rules": {
       "recommended": true,
       "nursery": {
-        "useSortedClasses": "on"
+        "useSortedClasses": {
+          "level": "info",
+          "fix": "safe"
+        }
       },
       "correctness": {
         "useUniqueElementIds": "off"
