@@ -1,8 +1,20 @@
-import { Icon } from "@iconify/react";
+import { ChevronRightIcon, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
 import { secureFetch } from "@/lib/axios";
 import { getRole } from "@/lib/getRole";
+import { formatDate } from "@/utils/formatDate";
 
 export default async function FairsPage() {
   const fairs = await secureFetch<Fair[]>({
@@ -12,54 +24,50 @@ export default async function FairsPage() {
   const canCreateFair = role === "ADMIN" || role === "MERCADEO";
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-semibold text-3xl">Ferias</h1>
+    <div className="flex flex-col gap-6">
+      <header className="flex items-center justify-between">
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          Ferias
+        </h1>
         {canCreateFair && (
-          <Link href="/dashboard/fairs/create" className="btn btn-primary">
-            <Icon icon="tabler:plus" className="size-5" /> Crear feria
-          </Link>
-        )}
-      </div>
-
-      <div className="space-y-4">
-        {fairs.length === 0 ? (
-          <div className="card">
-            <div className="card-body justify-center">
-              <p className="text-center text-base-content/50">
-                No hay ferias disponibles
-              </p>
-            </div>
-          </div>
-        ) : (
-          fairs.map((fair) => (
-            <Link
-              key={fair.id}
-              href={`./fairs/${fair.id}`}
-              className="card hover:-translate-y-0.5 transition-transform hover:cursor-pointer hover:bg-base-100"
-            >
-              <div className="card-body">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={fair.logoUrl}
-                    alt={fair.name}
-                    className="size-15"
-                    width={100}
-                    height={100}
-                  />
-                  <div className="grow space-y-2">
-                    <h2 className="card-title">{fair.name}</h2>
-                  </div>
-                  <span className="badge badge-primary badge-outline rounded-full">
-                    Detalles
-                    <Icon icon="tabler:arrow-right" className="size-5" />
-                  </span>
-                </div>
-              </div>
+          <Button size="sm" asChild>
+            <Link href="/dashboard/fairs/create">
+              <Plus data-icon="inline-start" /> Crear
             </Link>
-          ))
+          </Button>
         )}
-      </div>
+      </header>
+
+      <ItemGroup>
+        {fairs.map((fair) => (
+          <Item key={fair.id} variant="outline" role="listitem" asChild>
+            <Link href={`/dashboard/fairs/${fair.id}`}>
+              <ItemMedia>
+                <Image
+                  src={fair.logoUrl}
+                  alt={fair.name}
+                  width={60}
+                  height={60}
+                  className="rounded-full"
+                />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{fair.name}</ItemTitle>
+                <ItemDescription>
+                  <Badge>
+                    {formatDate(fair.startDate)}
+                    {fair.startDate !== fair.endDate &&
+                      ` - ${formatDate(fair.endDate)}`}
+                  </Badge>
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <ChevronRightIcon className="size-4" />
+              </ItemActions>
+            </Link>
+          </Item>
+        ))}
+      </ItemGroup>
     </div>
   );
 }
