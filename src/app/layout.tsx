@@ -4,6 +4,7 @@ import type { PropsWithChildren } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import "./globals.css";
+import { FlyonUIProvider } from "@/components/FlyonuiScript";
 
 const publicSans = Public_Sans({
   preload: true,
@@ -21,7 +22,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="es">
       <body style={publicSans.style} className="dark antialiased">
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          <FlyonUIProvider>{children}</FlyonUIProvider>
+        </TooltipProvider>
       </body>
     </html>
   );
