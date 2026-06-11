@@ -1,3 +1,19 @@
+import {
+  MapPin,
+  Package,
+  Sparkles,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
+import { Fragment } from "react/jsx-runtime";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemSeparator,
+  ItemTitle,
+} from "@/components/ui/item";
 import { secureFetch } from "@/lib/axios";
 
 export async function CompetitorsTableMercadeo({ fairId }: { fairId: string }) {
@@ -7,53 +23,53 @@ export async function CompetitorsTableMercadeo({ fairId }: { fairId: string }) {
   });
 
   return (
-    <table className="table">
-      <tbody>
-        {competitors.length === 0 && (
-          <tr>
-            <td className="text-center">No hay competidores registrados</td>
-          </tr>
-        )}
-        {competitors.map((competitor) => (
-          <tr key={competitor.id}>
-            <td className="px-0 sm:px-5">
-              <div className="flex flex-col gap-3 text-wrap">
-                <div>
-                  <span className="font-light text-gray-500 text-xs">
-                    {competitor.city && `${competitor.city}, `}
-                    {competitor.country}
+    <ItemGroup>
+      {competitors.map((competitor, index) => (
+        <Fragment key={competitor.id}>
+          <Item>
+            <ItemContent>
+              <p className="-mb-1 flex items-center gap-1 text-muted-foreground text-sm">
+                <MapPin className="inline-block size-3" />
+                {competitor.city && `${competitor.city}, `}
+                {competitor.country}
+              </p>
+              <ItemTitle className="text-lg">{competitor.company}</ItemTitle>
+              <ItemDescription className="py-1">
+                <strong className="inline-flex items-center gap-1">
+                  <Package className="inline-block size-3" /> Productos
+                  destacados:{" "}
+                </strong>
+                <br />
+                {/*<Package className="inline-block size-4" />{" "}*/}
+                {competitor.featuredProducts}
+              </ItemDescription>
+              <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="flex flex-col gap-1 rounded-md bg-emerald-500/10 p-3">
+                  <span className="flex items-center gap-1 font-semibold text-emerald-600 text-xs">
+                    <TrendingUp className="size-3" />
+                    Fortalezas
                   </span>
-                  <h3 className="mt-1 font-bold text-gray-800 text-xl">
-                    {competitor.company}
-                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    {competitor.strengths}
+                  </p>
                 </div>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {competitor.featuredProducts}
-                </p>
-                <div className="my-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="rounded-lg bg-success-content p-3">
-                    <h4 className="mb-2 font-semibold text-sm text-success">
-                      Fortalezas
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      {competitor.strengths}
-                    </p>
-                  </div>
 
-                  <div className="rounded-lg bg-error-content p-3">
-                    <h4 className="mb-2 font-semibold text-error text-sm">
-                      Debilidades
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      {competitor.weaknesses}
-                    </p>
-                  </div>
+                <div className="flex flex-col gap-1 rounded-md bg-rose-500/10 p-3">
+                  <span className="flex items-center gap-1 font-semibold text-rose-600 text-xs">
+                    <TrendingDown className="size-3" />
+                    Debilidades
+                  </span>
+                  <p className="text-muted-foreground text-sm">
+                    {competitor.weaknesses}
+                  </p>
                 </div>
               </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            </ItemContent>
+          </Item>
+
+          {index < competitors.length - 1 && <ItemSeparator />}
+        </Fragment>
+      ))}
+    </ItemGroup>
   );
 }

@@ -1,3 +1,12 @@
+"use client";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+
 interface Props {
   countries: {
     country: string;
@@ -6,19 +15,27 @@ interface Props {
 }
 
 export function VisitorsCountryGraph({ countries }: Props) {
-  return countries.map(({ country, count }) => (
-    <div
-      key={country}
-      className="flex h-full flex-col items-center justify-end"
-    >
-      <div
-        className="w-10 rounded-t bg-primary"
-        style={{
-          height: `${(count / Math.max(...countries.map(({ count }) => count))) * 100}%`,
-        }}
-      ></div>
-      <span className="mt-1 text-xs">{country}</span>
-      <span className="font-medium text-xs">{count}</span>
-    </div>
-  ));
+  const chartConfig = {
+    count: {
+      label: "Visitantes",
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig;
+
+  return (
+    <ChartContainer config={chartConfig} className="min-h-60 w-full">
+      <BarChart data={countries}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="country" tickMargin={8} />
+        <YAxis
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          allowDecimals={false}
+        />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <Bar dataKey="count" fill="var(--color-count)" radius={4} />
+      </BarChart>
+    </ChartContainer>
+  );
 }

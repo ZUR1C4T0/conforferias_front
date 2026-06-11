@@ -38,17 +38,17 @@ export default async function FairsPage() {
         )}
       </header>
 
-      <ItemGroup>
+      <ItemGroup className="gap-4">
         {fairs.map((fair) => (
           <Item key={fair.id} variant="outline" role="listitem" asChild>
             <Link href={`/dashboard/fairs/${fair.id}`}>
-              <ItemMedia>
+              <ItemMedia >
                 <Image
                   src={fair.logoUrl}
                   alt={fair.name}
                   width={60}
                   height={60}
-                  className="rounded-full"
+                  className="aspect-square rounded-full object-contain"
                 />
               </ItemMedia>
               <ItemContent>

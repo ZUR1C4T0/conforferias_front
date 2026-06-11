@@ -1,4 +1,14 @@
-import { Icon } from "@iconify/react";
+import { AlertTriangle } from "lucide-react";
+import { Fragment } from "react/jsx-runtime";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+} from "@/components/ui/item";
 import { secureFetch } from "@/lib/axios";
 
 export default async function ImprovementAreasTable({
@@ -12,20 +22,21 @@ export default async function ImprovementAreasTable({
   });
 
   return (
-    <ul className="divide-y divide-base-200">
-      {improvementAreas.map((improvementArea) => (
-        <li
-          key={improvementArea.id}
-          className="flex items-start p-2 hover:bg-base-100"
-        >
-          <span className="mr-3 shrink-0 rounded-full bg-warning p-1 text-warning-content">
-            <Icon icon="tabler:alert-triangle" className="size-3" />
-          </span>
-          <p className="whitespace-pre-line text-sm">
-            {improvementArea.content}
-          </p>
-        </li>
+    <ItemGroup>
+      {improvementAreas.map((improvementArea, index) => (
+        <Fragment key={improvementArea.id}>
+          <Item size="sm">
+            <ItemMedia>
+              <AlertTriangle className="size-3" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>{improvementArea.content}</ItemTitle>
+              <ItemDescription></ItemDescription>
+            </ItemContent>
+          </Item>
+          {index !== improvementAreas.length - 1 && <ItemSeparator />}
+        </Fragment>
       ))}
-    </ul>
+    </ItemGroup>
   );
 }
