@@ -2,9 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
-import { Notyf } from "notyf";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -51,7 +51,6 @@ export default function AssignRepsForm({ users, representatives }: Props) {
   }, [representatives, form.reset]);
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const notyf = new Notyf();
     const reprs = data.representatives.map((id) => {
       return { userId: id };
     });
@@ -60,12 +59,12 @@ export default function AssignRepsForm({ users, representatives }: Props) {
       representatives: reprs,
     });
     if (!error) {
-      notyf.success(message);
+      toast.success(message);
       form.reset({
         representatives: representatives.map((rep) => rep.user.id),
       });
     } else {
-      notyf.error(message);
+      toast.error(message);
     }
   };
 
