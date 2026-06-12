@@ -42,13 +42,13 @@ export default async function FairsPage() {
         {fairs.map((fair) => (
           <Item key={fair.id} variant="outline" role="listitem" asChild>
             <Link href={`/dashboard/fairs/${fair.id}`}>
-              <ItemMedia >
+              <ItemMedia>
                 <Image
                   src={fair.logoUrl}
                   alt={fair.name}
                   width={60}
                   height={60}
-                  className="aspect-square rounded-full object-contain"
+                  className="aspect-square rounded-md object-contain"
                 />
               </ItemMedia>
               <ItemContent>
