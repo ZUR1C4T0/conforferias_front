@@ -6,7 +6,11 @@ export const schema = z.object({
     .email("El email es inválido")
     .trim()
     .nonempty("El email es requerido"),
-  password: z.string().trim().nonempty("La contraseña es requerida"),
+  password: z
+    .string()
+    .trim()
+    .nonempty("La contraseña es requerida")
+    .min(6, "La contraseña debe tener mínimo 6 caracteres"),
   role: z.enum<Role[]>(
     ["ADMIN", "MERCADEO", "REPRESENTANTE"],
     "El rol es requerido",
