@@ -2,7 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import CreateUserForm from "./CreateUserForm";
+import { CreateUserForm } from "./CreateUserForm";
 
 export default function CreateUserPage() {
   return (

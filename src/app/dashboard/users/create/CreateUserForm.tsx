@@ -31,7 +31,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { createUser } from "./createUser";
 import { defaultValues, schema } from "./form";
 
-export default function CreateUserForm() {
+export function CreateUserForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm({
