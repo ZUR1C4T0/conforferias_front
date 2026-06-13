@@ -1,22 +1,46 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Icon } from "@iconify/react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Notyf } from "notyf";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type z from "zod";
-import { SubmitButton } from "@/components/SubmitButton";
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 import { createUser } from "./createUser";
 import { defaultValues, schema } from "./form";
 
 export default function CreateUserForm() {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues,
     mode: "onSubmit",
   });
+
+  const { errors, isSubmitting } = form.formState;
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     const notyf = new Notyf();
@@ -30,80 +54,78 @@ export default function CreateUserForm() {
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      {/* Campo Nombre */}
-      <div>
-        <label htmlFor="name" className="label-text">
-          Nombre *
-        </label>
-        <input
-          type="text"
-          id="name"
-          className={`input ${form.formState.errors.name ? "is-invalid" : ""}`}
-          placeholder="Nombre del usuario..."
-          {...form.register("name")}
-        />
-        <span className="helper-text">
-          {form.formState.errors.name?.message}
-        </span>
-      </div>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
+        <Field data-invalid={!!errors.name}>
+          <FieldLabel htmlFor="name">Nombre</FieldLabel>
+          <Input
+            id="name"
+            type="text"
+            placeholder="Nombre del usuario"
+            {...form.register("name")}
+            aria-invalid={!!errors.name}
+          />
+          <FieldError errors={[errors.name]} />
+        </Field>
 
-      {/* Campo Email */}
-      <div>
-        <label htmlFor="email" className="label-text">
-          Email *
-        </label>
-        <input
-          type="email"
-          id="email"
-          className={`input ${form.formState.errors.email ? "is-invalid" : ""}`}
-          placeholder="Email del usuario..."
-          {...form.register("email")}
-        />
-        <span className="helper-text">
-          {form.formState.errors.email?.message}
-        </span>
-      </div>
+        <Field data-invalid={!!errors.email}>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <Input
+            id="email"
+            type="email"
+            placeholder="Email del usuario"
+            {...form.register("email")}
+            aria-invalid={!!errors.email}
+          />
+          <FieldError errors={[errors.email]} />
+        </Field>
 
-      {/* Campo Contraseña */}
-      <div>
-        <label htmlFor="password" className="label-text">
-          Contraseña *
-        </label>
-        <input
-          type="password"
-          id="password"
-          className={`input ${form.formState.errors.password ? "is-invalid" : ""}`}
-          placeholder="Contraseña..."
-          {...form.register("password")}
-        />
-        <span className="helper-text">
-          {form.formState.errors.password?.message}
-        </span>
-      </div>
+        <Field data-invalid={!!errors.password}>
+          <FieldLabel htmlFor="password">Contraseña</FieldLabel>
+          <InputGroup>
+            <InputGroupInput
+              id="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Contraseña del usuario"
+              {...form.register("password")}
+              aria-invalid={!!errors.password}
+            />
+            <InputGroupAddon
+              align="inline-end"
+              className="cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+            </InputGroupAddon>
+          </InputGroup>
+          <FieldError errors={[errors.password]} />
+        </Field>
 
-      {/* Campo Rol */}
-      <div>
-        <label htmlFor="role" className="label-text">
-          Rol *
-        </label>
-        <select
-          id="role"
-          className={`select ${form.formState.errors.role ? "is-invalid" : ""}`}
-          {...form.register("role")}
-        >
-          <option value="ADMIN">Administrador</option>
-          <option value="MERCADEO">Mercadeo</option>
-          <option value="REPRESENTANTE">Representante</option>
-        </select>
-        <span className="helper-text">
-          {form.formState.errors.role?.message}
-        </span>
-      </div>
+        <Field data-invalid={!!errors.role}>
+          <FieldLabel htmlFor="role">Rol</FieldLabel>
+          <Select
+            value={form.watch("role")}
+            onValueChange={(value) => form.setValue("role", value as Role)}
+          >
+            <SelectTrigger id="role" aria-invalid={!!errors.role}>
+              <SelectValue placeholder="Seleccione un rol" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ADMIN">Administrador</SelectItem>
+              <SelectItem value="MERCADEO">Mercadeo</SelectItem>
+              <SelectItem value="REPRESENTANTE">Representante</SelectItem>
+            </SelectContent>
+          </Select>
+          <FieldError errors={[errors.role]} />
+        </Field>
 
-      <SubmitButton>
-        <Icon icon="tabler:check" className="size-5" /> Crear
-      </SubmitButton>
+        <Field>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && <Spinner data-icon="inline-start" />}
+            Crear usuario
+          </Button>
+        </Field>
+      </FieldGroup>
     </form>
   );
 }
