@@ -1,5 +1,8 @@
 import { Icon } from "@iconify/react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { secureFetch } from "@/lib/axios";
 import { EditUserForm } from "./EditUserForm";
 
@@ -11,19 +14,23 @@ export default async function EditUserPage({ params }: NextPageContext) {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link href="../" className="btn btn-secondary btn-soft btn-circle">
-          <Icon icon="tabler:arrow-left" className="size-5" />
-        </Link>
-        <h1 className="font-semibold text-xl sm:text-3xl">Editar usuario</h1>
-      </div>
+    <div className="flex flex-col gap-6">
+      <header className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="../">
+            <ArrowLeft data-icon="inline-start" />
+          </Link>
+        </Button>
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          Editar usuario
+        </h1>
+      </header>
 
-      <div className="card card-border">
-        <div className="card-body">
+      <Card>
+        <CardContent>
           <EditUserForm user={user} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
