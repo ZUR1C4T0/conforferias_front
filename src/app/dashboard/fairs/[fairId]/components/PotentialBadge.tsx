@@ -1,3 +1,5 @@
+import { Badge } from "@/components/ui/badge";
+
 export function PotentialBadge({
   potential,
 }: {
@@ -6,18 +8,18 @@ export function PotentialBadge({
   let classes: string;
   switch (potential) {
     case "BAJO":
-      classes = "badge badge-error text-xs";
+      classes = "bg-red-500 text-white";
       break;
     case "MEDIO":
-      classes = "badge badge-warning text-xs";
+      classes = "bg-yellow-500 text-white";
       break;
     case "ALTO":
-      classes = "badge badge-success text-xs";
+      classes = "bg-green-500 text-white";
       break;
     default:
-      classes = "badge badge-accent text-xs";
+      classes = "bg-gray-500 text-white";
       break;
   }
 
-  return <span className={classes}>{potential}</span>;
+  return <Badge className={`text-xs ${classes}`}>{potential}</Badge>;
 }

@@ -1,5 +1,23 @@
-import { Icon } from "@iconify/react";
+import {
+  Building2,
+  Grid2X2,
+  Lightbulb,
+  Plus,
+  Star,
+  TrendingUp,
+  Trophy,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import AchievementsTable from "./AchievementsTable";
 import CompetitorsTable from "./CompetitorsTable";
 import ContactsTable from "./ContactsTable";
@@ -10,132 +28,135 @@ import TrendsTable from "./TrendsTable";
 
 export default function FairPageRep({ fair }: { fair: Fair }) {
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="flex flex-col gap-6">
       {/* --- Contactos --- */}
-      <div className="card card-border col-span-full">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">
-            <Icon icon="tabler:users-group" className="inline" /> Contactos
-          </h2>
-          <Link
-            href={`./${fair.id}/contacts/create`}
-            className="btn btn-success"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden sm:inline">Crear</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle className="my-auto flex items-center gap-1 text-lg">
+            <Users className="inline" /> Contactos
+          </CardTitle>
+          <CardAction>
+            <Button size="sm" asChild>
+              <Link href={`./${fair.id}/contacts/create`}>
+                <Plus data-icon="inline-start" /> Crear
+              </Link>
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent className="no-scrollbar max-h-[60dvh] overflow-y-auto">
           <ContactsTable fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* --- Competidores --- */}
-      <div className="card card-border col-span-full">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">
-            <Icon icon="tabler:buildings" className="inline" /> Competidores
-          </h2>
-          <Link
-            href={`./${fair.id}/competitors/create`}
-            className="btn btn-success"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden sm:inline">Agregar</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle className="my-auto flex items-center gap-1 text-lg">
+            <Building2 /> Competidores
+          </CardTitle>
+          <CardAction>
+            <Button size="sm" asChild>
+              <Link href={`./${fair.id}/competitors/create`}>
+                <Plus data-icon="inline-start" /> Crear
+              </Link>
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent className="no-scrollbar max-h-[60dvh] overflow-y-auto">
           <CompetitorsTable fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* --- DAFO --- */}
-      <div className="card card-border col-span-full">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">
-            <Icon icon="tabler:blocks" className="inline" /> DAFO
-          </h2>
-          <Link href={`./${fair.id}/dafo/create`} className="btn btn-success">
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden sm:inline">Agregar</span>
-          </Link>
-        </div>
-        <div className="card-body">
-          <p className="mb-2 text-sm">
+      <Card>
+        <CardHeader>
+          <CardTitle className="my-auto flex items-center gap-1 text-lg">
+            <Grid2X2 /> DAFO
+          </CardTitle>
+          <CardDescription>
             DAFO de la marca Confortfresh en el evento
-          </p>
+          </CardDescription>
+          <CardAction>
+            <Button size="sm" asChild>
+              <Link href={`./${fair.id}/dafo/create`}>
+                <Plus data-icon="inline-start" /> Crear
+              </Link>
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
           <DAFOTable fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* --- Logros --- */}
-      <div className="card card-border">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">
-            <Icon icon="tabler:trophy" className="inline" /> Principales logros
-          </h2>
-          <Link
-            href={`./${fair.id}/achievements/create`}
-            className="btn btn-success"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden 2xl:inline">Agregar</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle className="my-auto flex items-center gap-1 text-lg">
+            <Trophy /> Principales logros
+          </CardTitle>
+          <CardAction>
+            <Button size="sm" asChild>
+              <Link href={`./${fair.id}/achievements/create`}>
+                <Plus data-icon="inline-start" /> Crear
+              </Link>
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent className="no-scrollbar max-h-[60dvh] overflow-y-auto">
           <AchievementsTable fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* --- Areas de mejora --- */}
-      <div className="card card-border">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">
-            <Icon icon="tabler:settings-up" className="inline" /> Areas de
-            mejora
-          </h2>
-          <Link
-            href={`./${fair.id}/improvement-areas/create`}
-            className="btn btn-success"
-          >
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden 2xl:inline">Agregar</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle className="my-auto flex items-center gap-1 text-lg">
+            <Lightbulb /> Areas de mejora
+          </CardTitle>
+          <CardAction>
+            <Button size="sm" asChild>
+              <Link href={`./${fair.id}/improvement-areas/create`}>
+                <Plus data-icon="inline-start" /> Crear
+              </Link>
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent className="no-scrollbar max-h-[60dvh] overflow-y-auto">
           <ImprovementAreasTable fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* --- Tendencias --- */}
-      <div className="card card-border">
-        <div className="card-header flex gap-2">
-          <h2 className="card-title grow">
-            <Icon icon="tabler:trending-up" className="inline" /> Tendencias
-            observadas
-          </h2>
-          <Link href={`./${fair.id}/trends/create`} className="btn btn-success">
-            <Icon icon="tabler:plus" className="size-5" />{" "}
-            <span className="hidden 2xl:inline">Agregar</span>
-          </Link>
-        </div>
-        <div className="card-body h-80 overflow-y-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle className="my-auto flex items-center gap-1 text-lg">
+            <TrendingUp /> Tendencias observadas
+          </CardTitle>
+          <CardAction>
+            <Button size="sm" asChild>
+              <Link href={`./${fair.id}/trends/create`}>
+                <Plus data-icon="inline-start" /> Crear
+              </Link>
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent className="no-scrollbar max-h-[60dvh] overflow-y-auto">
           <TrendsTable fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* --- Valoración --- */}
-      <div className="card card-border">
-        <div className="card-header">
-          <h2 className="card-title">
-            <Icon icon="tabler:stars" className="inline" /> Valoración general
-            de la feria
-          </h2>
-        </div>
-        <div className="card-body">
+      <Card>
+        <CardHeader>
+          <CardTitle className="my-auto flex items-center gap-1 text-lg">
+            <Star /> Valoración general de la feria
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
           <EvaluateFair fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
