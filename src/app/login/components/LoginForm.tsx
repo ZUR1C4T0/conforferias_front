@@ -1,5 +1,6 @@
 "use client";
-import { useActionState } from "react";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -8,7 +9,12 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { type LoginState, loginAction } from "../actions/loginAction";
@@ -17,6 +23,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [showPassword, setShowPassword] = useState(false);
   const [state, formAction, isPending] = useActionState<LoginState, FormData>(
     loginAction,
     null,
@@ -33,26 +40,43 @@ export function LoginForm({
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Correo Electrónico</FieldLabel>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="correo@confortfresh.com"
-                  autoComplete="email"
-                  required
-                />
+                <InputGroup>
+                  <InputGroupAddon align="inline-start">
+                    <Mail />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="correo@confortfresh.com"
+                    autoComplete="email"
+                    required
+                  />
+                </InputGroup>
               </Field>
 
               <Field>
                 <FieldLabel htmlFor="password">Contraseña</FieldLabel>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="********"
-                  autoComplete="current-password"
-                  required
-                />
+                <InputGroup>
+                  <InputGroupAddon align="inline-start">
+                    <Lock />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="********"
+                    autoComplete="current-password"
+                    required
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <Eye /> : <EyeOff />}
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                </InputGroup>
               </Field>
 
               {state?.error && <FieldError>{state.error}</FieldError>}
