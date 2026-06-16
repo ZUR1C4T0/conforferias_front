@@ -1,4 +1,4 @@
-import { ArrowRight, Calendar, User } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -12,13 +12,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { getRole } from "@/lib/getRole";
+import { menuItemsByRole } from "@/lib/menu";
 
-const menu = [
-  { title: "Ferias", url: "/dashboard/fairs", icon: <Calendar /> },
-  { title: "Usuarios", url: "/dashboard/users", icon: <User /> },
-];
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const role = await getRole();
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader />
@@ -27,12 +28,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupLabel>Menu principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menu.map((item) => (
-                <SidebarMenuItem key={item.title}>
+              {menuItemsByRole[role].map((item) => (
+                <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
+                    <Link href={item.path}>
                       {item.icon}
-                      {item.title}
+                      {item.label}
                       <ArrowRight className="ms-auto" />
                     </Link>
                   </SidebarMenuButton>
@@ -42,7 +43,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter />
     </Sidebar>
   );
 }

@@ -1,36 +1,41 @@
+import { Calendar, User } from "lucide-react";
+import type { JSX } from "react";
+
 type MenuItem = {
   label: string;
-  icon: string;
+  icon: JSX.Element;
   path: string;
 };
 
 type MenuItemWithSubItems = {
   label: string;
-  icon: string;
+  icon: JSX.Element;
   subItems: (Omit<MenuItem, "icon"> & Partial<Pick<MenuItem, "icon">>)[];
 };
 
 export const menuItemsByRole: {
-  [role in Role]: (MenuItem | MenuItemWithSubItems)[];
+  [role in Role]: MenuItem[];
 } = {
   // --- Menu para ADMIN ---
   ADMIN: [
-    // { label: "Dashboard", path: "/dashboard", icon: "tabler:home" },
     {
       label: "Ferias",
       path: "/dashboard/fairs",
-      icon: "tabler:calendar-event",
+      icon: <Calendar />,
     },
-    { label: "Usuarios", path: "/dashboard/users", icon: "tabler:users" },
+    {
+      label: "Usuarios",
+      path: "/dashboard/users",
+      icon: <User />,
+    },
   ],
 
   // --- Menu para MERCADEO ---
   MERCADEO: [
-    // { label: "Dashboard", path: "/dashboard", icon: "tabler:home" },
     {
       label: "Ferias",
       path: "/dashboard/fairs",
-      icon: "tabler:calendar-event",
+      icon: <Calendar />,
     },
   ],
 
@@ -38,7 +43,7 @@ export const menuItemsByRole: {
   REPRESENTANTE: [
     {
       label: "Ferias",
-      icon: "tabler:calendar-event",
+      icon: <Calendar />,
       path: "/dashboard/fairs",
     },
   ],
