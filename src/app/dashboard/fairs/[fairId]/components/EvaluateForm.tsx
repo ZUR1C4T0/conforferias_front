@@ -12,7 +12,7 @@ import { updateEvaluation } from "../actions/updateEvaluation";
 export const schema = z.object({
   score: z
     .string()
-    .pipe(z.transform((value) => parseInt(value)))
+    .pipe(z.transform((value) => parseInt(value, 10)))
     .pipe(
       z.number().min(1, "Puntuación requerida").max(10, "Puntuación requerida"),
     ),

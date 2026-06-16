@@ -102,7 +102,7 @@ export default function EditActionForm({ action }: { action: PostFairAction }) {
                 <li
                   key={option.value}
                   className={
-                    "hover:cursor-pointer hover:bg-base-200 active:bg-base-300/25 " +
+                    "hover:cursor-pointer hover:bg-base-200 active:bg-base-300/25" +
                     option.colorClasses
                   }
                 >

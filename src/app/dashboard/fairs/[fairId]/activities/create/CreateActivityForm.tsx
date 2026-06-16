@@ -57,7 +57,7 @@ export default function CreateActivityForm({ fairId }: { fairId: string }) {
                       type="radio"
                       className={
                         "radio radio-primary ms-3" +
-                        (form.formState.errors.type ? " is-invalid" : "")
+                        (form.formState.errors.type ? "is-invalid" : "")
                       }
                       value={key}
                       {...form.register("type")}

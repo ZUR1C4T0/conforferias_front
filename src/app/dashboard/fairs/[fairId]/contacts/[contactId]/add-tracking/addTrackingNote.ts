@@ -23,8 +23,7 @@ export default async function addTrackingNote(
     console.error("Error adding tracking note:", error);
     return {
       success: false,
-      message:
-        "Error al agregar la nota de seguimiento.",
+      message: "Error al agregar la nota de seguimiento.",
     };
   }
 }

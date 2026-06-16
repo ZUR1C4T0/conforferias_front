@@ -6,7 +6,14 @@
     "useIgnoreFile": false
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/src/assets/countries.json",
+      "!**/src/components/ui"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -16,6 +23,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      },
       "nursery": {
         "useSortedClasses": {
           "level": "info",

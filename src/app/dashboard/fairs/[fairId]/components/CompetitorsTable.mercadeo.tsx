@@ -1,10 +1,4 @@
-import {
-  MapPin,
-  Package,
-  Sparkles,
-  TrendingDown,
-  TrendingUp,
-} from "lucide-react";
+import { MapPin, Package, TrendingDown, TrendingUp } from "lucide-react";
 import { Fragment } from "react/jsx-runtime";
 import {
   Item,
@@ -40,7 +34,6 @@ export async function CompetitorsTableMercadeo({ fairId }: { fairId: string }) {
                   destacados:{" "}
                 </strong>
                 <br />
-                {/*<Package className="inline-block size-4" />{" "}*/}
                 {competitor.featuredProducts}
               </ItemDescription>
               <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">

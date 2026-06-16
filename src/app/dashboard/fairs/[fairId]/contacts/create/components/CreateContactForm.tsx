@@ -260,7 +260,7 @@ export default function CreateContactForm({
             />
             <Icon
               icon="tabler:caret-up-down"
-              className="-translate-y-1/2 absolute end-3 top-1/2 size-4 shrink-0 text-base-content"
+              className="absolute end-3 top-1/2 size-4 shrink-0 -translate-y-1/2 text-base-content"
               data-combo-box-toggle
             />
           </div>
