@@ -1,6 +1,8 @@
-import { Icon } from "@iconify/react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { secureFetch } from "@/lib/axios";
 import type { Profile } from "../../create/page";
 import EditContactForm from "./EditContactForm";
@@ -22,15 +24,27 @@ export default async function EditContactPage({ params }: NextPageContext) {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link href="./" className="btn btn-secondary btn-soft btn-circle">
-          <Icon icon="tabler:arrow-left" className="size-5" />
-        </Link>
-        <h1 className="font-semibold text-xl sm:text-3xl">Editar Contacto</h1>
-      </div>
+    <div className="flex flex-col gap-6">
+      <header className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="./">
+            <ArrowLeft data-icon="inline-start" />
+          </Link>
+        </Button>
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          Editar contacto
+        </h1>
+      </header>
 
-      <EditContactForm contact={contact} profiles={profiles} fairId={fairId} />
+      <Card>
+        <CardContent>
+          <EditContactForm
+            contact={contact}
+            profiles={profiles}
+            fairId={fairId}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }
