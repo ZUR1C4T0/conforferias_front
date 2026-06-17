@@ -1,5 +1,25 @@
-import { Icon } from "@iconify/react";
+import {
+  ArrowLeft,
+  BadgeDollarSign,
+  Briefcase,
+  Building,
+  Edit,
+  Globe,
+  IdCard,
+  Mail,
+  MapPin,
+  Phone,
+  User,
+} from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { secureFetch } from "@/lib/axios";
 import { Amount } from "@/lib/constants";
 import { PotentialBadge } from "../../components/PotentialBadge";
@@ -12,151 +32,187 @@ export default async function ContactPage({ params }: NextPageContext) {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link href="../" className="btn btn-secondary btn-soft btn-circle">
-          <Icon icon="tabler:arrow-left" className="size-5" />
-        </Link>
-        <h1 className="grow font-semibold text-xl sm:text-3xl">
-          Detalles del Contacto
+    <div className="@container flex flex-col gap-6">
+      <header className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="../">
+            <ArrowLeft data-icon="inline-start" />
+          </Link>
+        </Button>
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          Detalles del contacto
         </h1>
-        <Link href={`./${contact.id}/edit`} className="btn btn-primary">
-          <Icon icon="tabler:edit" className="size-5" /> Editar
-        </Link>
-      </div>
+        <Button className="ml-auto" asChild>
+          <Link href={`./${contact.id}/edit`}>
+            <Edit data-icon="inline-start" />
+            Editar
+          </Link>
+        </Button>
+      </header>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Sección de Información Principal */}
-        <div className="space-y-6">
-          {/* Tarjeta de Información Básica */}
-          <div className="card card-border">
-            <div className="card-header">
-              <h2 className="card-title">Información básica</h2>
-            </div>
-            <div className="card-body grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="col-span-full">
-                <h3 className="font-medium text-base-content/60 text-sm">
-                  Nombre
-                </h3>
-                <p className="text-base">{contact.name}</p>
-              </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Información del contacto</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup className="grid @lg:grid-cols-2">
+            <Field>
+              <FieldLabel>Nombre</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <User />
+                </InputGroupAddon>
+                <InputGroupInput value={contact.name} readOnly />
+              </InputGroup>
+            </Field>
+            <Field>
+              <FieldLabel>Correo electrónico</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Mail />
+                </InputGroupAddon>
+                <InputGroupInput value={contact.email} readOnly />
+              </InputGroup>
+            </Field>
+            <Field>
+              <FieldLabel>Teléfono</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Phone />
+                </InputGroupAddon>
+                <InputGroupInput value={contact.phone} readOnly />
+              </InputGroup>
+            </Field>
+            <Field>
+              <FieldLabel>Perfil</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Briefcase />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={
+                    contact.profile.name !== "Otros"
+                      ? contact.profile.name
+                      : (contact.otherProfile ?? "-")
+                  }
+                  readOnly
+                />
+              </InputGroup>
+            </Field>
+            <Field orientation="horizontal">
+              <FieldLabel style={{ flex: "none" }}>
+                Potencial estimado
+              </FieldLabel>
+              <PotentialBadge potential={contact.estimatedPotential} />
+            </Field>
+          </FieldGroup>
+        </CardContent>
+      </Card>
 
-              <div className="col-span-full">
-                <h3 className="font-medium text-base-content/60 text-sm">
-                  Correo
-                </h3>
-                <p className="text-base">{contact.email}</p>
-              </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Información Empresarial</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup className="grid @lg:grid-cols-2">
+            <Field>
+              <FieldLabel>Empresa</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Building />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={contact.company ?? ""}
+                  placeholder="Sin información"
+                  readOnly
+                />
+              </InputGroup>
+            </Field>
+            <Field>
+              <FieldLabel>NIT</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <IdCard />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={contact.companyNit ?? ""}
+                  placeholder="Sin información"
+                  readOnly
+                />
+              </InputGroup>
+            </Field>
+          </FieldGroup>
+        </CardContent>
+      </Card>
 
-              <div>
-                <h3 className="font-medium text-base-content/60 text-sm">
-                  Teléfono
-                </h3>
-                <p className="text-base">{contact.phone}</p>
-              </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Ubicación</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup className="grid @lg:grid-cols-2">
+            <Field>
+              <FieldLabel>País</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Globe />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={contact.country}
+                  placeholder="Sin información"
+                  readOnly
+                />
+              </InputGroup>
+            </Field>
+            <Field>
+              <FieldLabel>Ciudad</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <MapPin />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={contact.city ?? ""}
+                  placeholder="Sin información"
+                  readOnly
+                />
+              </InputGroup>
+            </Field>
+          </FieldGroup>
+        </CardContent>
+      </Card>
 
-              <div>
-                <h3 className="font-medium text-base-content/60 text-sm">
-                  Perfil
-                </h3>
-                <p className="text-base">
-                  {contact.profile.name !== "Otros"
-                    ? contact.profile.name
-                    : contact.otherProfile}
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-medium text-base-content/60 text-sm">
-                  Potencial estimado
-                </h3>
-                <PotentialBadge potential={contact.estimatedPotential} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          {/* Tarjeta de Información Empresarial */}
-          {(contact.company || contact.companyNit) && (
-            <div className="card card-border">
-              <div className="card-header">
-                <h2 className="card-title">Información Empresarial</h2>
-              </div>
-              <div className="card-body grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {contact.company && (
-                  <div>
-                    <h3 className="font-medium text-base-content/60 text-sm">
-                      Empresa
-                    </h3>
-                    <p className="text-base">{contact.company}</p>
-                  </div>
-                )}
-
-                {contact.companyNit && (
-                  <div>
-                    <h3 className="font-medium text-base-content/60 text-sm">
-                      NIT
-                    </h3>
-                    <p className="text-base">{contact.companyNit}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Tarjeta de Ubicación */}
-          <div className="card card-border">
-            <div className="card-header">
-              <h2 className="card-title">Ubicación</h2>
-            </div>
-            <div className="card-body grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <h3 className="font-medium text-base-content/60 text-sm">
-                  País
-                </h3>
-                <p className="text-base">{contact.country}</p>
-              </div>
-
-              {contact.city && (
-                <div>
-                  <h3 className="font-medium text-base-content/60 text-sm">
-                    Ciudad
-                  </h3>
-                  <p className="text-base">{contact.city}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Sección de Venta */}
-        {contact.sale && (
-          <div className="space-y-6">
-            <div className="card card-border">
-              <div className="card-header">
-                <h2 className="card-title">Venta</h2>
-              </div>
-              <div className="card-body grid grid-cols-1 gap-4">
-                <div>
-                  <h3 className="font-medium text-base-content/60 text-sm">
-                    Valor estimado
-                  </h3>
-                  <p className="text-base">
-                    {contact.sale?.amount === Amount.BAJA
+      <Card>
+        <CardHeader>
+          <CardTitle>Venta</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup className="grid @lg:grid-cols-2">
+            <Field>
+              <FieldLabel>Valor aproximado</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <BadgeDollarSign />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={
+                    contact.sale?.amount === Amount.BAJA
                       ? "Entre 1 y 7 millones"
                       : contact.sale?.amount === Amount.MEDIO
                         ? "Entre 7 y 20 millones"
                         : contact.sale?.amount === Amount.ALTA
                           ? "Entre 20 y 50 millones"
-                          : "Más de 50 millones"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+                          : contact.sale?.amount === Amount.SUPERIOR
+                            ? "Más de 50 millones"
+                            : ""
+                  }
+                  placeholder="Sin información"
+                  readOnly
+                />
+              </InputGroup>
+            </Field>
+          </FieldGroup>
+        </CardContent>
+      </Card>
     </div>
   );
 }
