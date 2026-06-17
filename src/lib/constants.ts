@@ -32,8 +32,8 @@ export enum Amount {
 }
 
 export const AmountLabels = {
-  [Amount.BAJA]: "1-7 millones",
-  [Amount.MEDIO]: "7-20 millones",
-  [Amount.ALTA]: "20-50 millones",
-  [Amount.SUPERIOR]: "+50 millones",
+  [Amount.BAJA]: "De 1 a 7 millones",
+  [Amount.MEDIO]: "De 7 a 20 millones",
+  [Amount.ALTA]: "De 20 a 50 millones",
+  [Amount.SUPERIOR]: "Más de 50 millones",
 };
