@@ -1,5 +1,22 @@
-import { Icon } from "@iconify/react";
+import {
+  ArrowLeft,
+  Building,
+  Edit,
+  Globe,
+  MapPin,
+  ThumbsDown,
+  ThumbsUp,
+} from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Textarea } from "@/components/ui/textarea";
 import { secureFetch } from "@/lib/axios";
 
 export default async function CompetitorDetailsPage({
@@ -12,85 +29,106 @@ export default async function CompetitorDetailsPage({
   });
 
   return (
-    <div className="space-y-6">
-      {/* Header con botones de navegación */}
-      <div className="flex items-center gap-4">
-        <Link href="../" className="btn btn-secondary btn-soft btn-circle">
-          <Icon icon="tabler:arrow-left" className="size-5" />
-        </Link>
-        <h1 className="grow font-semibold text-xl sm:text-3xl">
-          Detalles del Competidor
+    <div className="@container flex flex-col gap-6">
+      <header className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="../">
+            <ArrowLeft data-icon="inline-start" />
+          </Link>
+        </Button>
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          Detalles del competidor
         </h1>
-        <Link href={`./${competitor.id}/edit`} className="btn btn-primary">
-          <Icon icon="tabler:edit" className="size-5" /> Editar
-        </Link>
-      </div>
+        <Button className="ml-auto" asChild>
+          <Link href={`./${competitor.id}/edit`}>
+            <Edit data-icon="inline-start" />
+            Editar
+          </Link>
+        </Button>
+      </header>
 
-      {/* Grid principal de dos columnas */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Columna izquierda - Información básica */}
-        <div className="card card-border">
-          <div className="card-header">
-            <h2 className="card-title">Información General</h2>
-          </div>
-          <div className="card-body grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="col-span-full">
-              <h3 className="font-medium text-base-content/60 text-sm">
-                Empresa
-              </h3>
-              <p className="text-base">{competitor.company}</p>
-            </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Información general</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup className="grid @lg:grid-cols-2">
+            <Field>
+              <FieldLabel>Empresa</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Building />
+                </InputGroupAddon>
+                <InputGroupInput value={competitor.company} readOnly />
+              </InputGroup>
+            </Field>
 
-            <div>
-              <h3 className="font-medium text-base-content/60 text-sm">País</h3>
-              <p className="text-base">{competitor.country}</p>
-            </div>
+            <Field>
+              <FieldLabel>País</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Globe />
+                </InputGroupAddon>
+                <InputGroupInput value={competitor.country} readOnly />
+              </InputGroup>
+            </Field>
 
-            {competitor.city && (
-              <div>
-                <h3 className="font-medium text-base-content/60 text-sm">
-                  Ciudad
-                </h3>
-                <p className="text-base">{competitor.city}</p>
-              </div>
-            )}
+            <Field>
+              <FieldLabel>Ciudad</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  <MapPin />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={competitor.city ?? ""}
+                  placeholder="Sin información"
+                  readOnly
+                />
+              </InputGroup>
+            </Field>
 
-            <div className="col-span-full">
-              <h3 className="font-medium text-base-content/60 text-sm">
-                Productos destacados
-              </h3>
-              <p className="text-base">{competitor.featuredProducts}</p>
-            </div>
-          </div>
-        </div>
+            <Field className="col-span-full">
+              <FieldLabel>Productos destacados</FieldLabel>
+              <Textarea
+                className="resize-none"
+                value={competitor.featuredProducts}
+                readOnly
+              />
+            </Field>
+          </FieldGroup>
+        </CardContent>
+      </Card>
 
-        {/* Columna derecha - Análisis competitivo */}
-        <div className="space-y-6">
-          {/* Tarjeta de fortalezas */}
-          <div className="card card-border">
-            <div className="card-header bg-success/10">
-              <h2 className="card-title flex items-center gap-2 text-success">
-                <Icon icon="tabler:thumb-up" className="size-5" /> Fortalezas
-              </h2>
-            </div>
-            <div className="card-body pt-5">
-              <p className="whitespace-pre-line">{competitor.strengths}</p>
-            </div>
-          </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Fortalezas y Debilidades</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup>
+            <Field>
+              <FieldLabel>
+                <ThumbsUp className="size-4" /> Fortalezas
+              </FieldLabel>
+              <Textarea
+                className="resize-none"
+                value={competitor.strengths}
+                readOnly
+              />
+            </Field>
 
-          {/* Tarjeta de debilidades */}
-          <div className="card card-border">
-            <div className="card-header bg-error/10">
-              <h2 className="card-title flex items-center gap-2 text-error">
-                <Icon icon="tabler:thumb-down" className="size-5" /> Debilidades
-              </h2>
-            </div>
-            <div className="card-body pt-5">
-              <p className="whitespace-pre-line">{competitor.weaknesses}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+            <Field>
+              <FieldLabel>
+                <ThumbsDown className="size-4" /> Debilidades
+              </FieldLabel>
+              <Textarea
+                className="resize-none"
+                value={competitor.weaknesses}
+                readOnly
+              />
+            </Field>
+          </FieldGroup>
+        </CardContent>
+      </Card>
     </div>
   );
 }
