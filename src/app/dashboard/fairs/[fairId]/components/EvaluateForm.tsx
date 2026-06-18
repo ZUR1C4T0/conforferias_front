@@ -1,9 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Notyf } from "notyf";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -54,12 +54,11 @@ export default function EvaluateForm({
   }, [evaluation, form.reset]);
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const notyf = new Notyf();
     const result = await updateEvaluation(fairId, data);
     if (result.success) {
-      notyf.success(result.message);
+      toast.success(result.message);
     } else {
-      notyf.error(result.message);
+      toast.error(result.message);
     }
   };
 

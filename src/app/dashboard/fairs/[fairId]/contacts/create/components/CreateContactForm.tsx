@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
-import { Notyf } from "notyf";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 import countries from "@/assets/countries.json";
 import { Button } from "@/components/ui/button";
@@ -97,16 +97,15 @@ export function CreateContactForm({ profiles }: { profiles: Profile[] }) {
     profiles.find((p) => p.id === selectedProfileId)?.name === "Otros";
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const notyf = new Notyf();
     if (typeof fairId !== "string") {
-      return notyf.error("Parametro 'fairId' inválido");
+      return toast.error("Parametro 'fairId' inválido");
     }
     const created = await createContact(fairId, data);
     if (!created) {
-      return notyf.error("Error al crear el contacto");
+      return toast.error("Error al crear el contacto");
     }
     form.reset();
-    notyf.success("Contacto creado exitosamente");
+    toast.success("Contacto creado exitosamente");
   };
 
   return (

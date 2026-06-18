@@ -3,9 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Notyf } from "notyf";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -43,13 +43,12 @@ export function CreateUserForm() {
   const { errors, isSubmitting } = form.formState;
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const notyf = new Notyf();
     const result = await createUser(data);
     if (result.success) {
-      notyf.success(result.message);
+      toast.success(result.message);
       router.push("/dashboard/users");
     } else {
-      notyf.error(result.message);
+      toast.error(result.message);
     }
   };
 
