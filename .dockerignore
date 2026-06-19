@@ -1,6 +1,77 @@
-node_modules
-.next
-.env
-.env.*
-.git
+# Dependencies
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Next.js build outputs (always generated during `next build`)
+.next/
+out/
+dist/
+build/
+.vercel/
+
+# Local development and editor files
+.git/
 .gitignore
+.gitattributes
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.log
+
+# Environment variables (only commit template files)
+.env
+.env*.local
+.env.development
+.env.test
+.env.production.local
+
+# Docker configuration files (not needed inside build context)
+Dockerfile*
+.dockerignore
+compose.yaml
+compose.yml
+docker-compose*.yaml
+docker-compose*.yml
+
+# Documentation
+*.md
+docs/
+
+# CI/CD configuration files
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+Jenkinsfile
+
+# Cache directories and temporary data
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.swc/
+.turbo/
+.tmp/
+.temp/
+
+# Sensitive or unnecessary configuration files
+*.pem
+.editorconfig
+.prettierrc*
+prettier.config.*
+.eslintrc*
+eslint.config.*
+.stylelintrc*
+stylelint.config.*
+biome.json
+.babelrc*
+*.iml
+*.ipr
+*.iws
