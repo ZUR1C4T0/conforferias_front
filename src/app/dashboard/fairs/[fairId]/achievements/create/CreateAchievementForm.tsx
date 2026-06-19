@@ -34,6 +34,8 @@ export default function CreateAchievementForm({ fairId }: { fairId: string }) {
     }
   };
 
+  const contentValue = form.watch("content") || "";
+
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
@@ -49,10 +51,10 @@ export default function CreateAchievementForm({ fairId }: { fairId: string }) {
             <InputGroupAddon align="block-end">
               <InputGroupText
                 className={cn({
-                  "text-danger": form.watch("content").length >= 1000,
+                  "text-danger": contentValue.length >= 1000,
                 })}
               >
-                {form.watch("content").length}/1000
+                {contentValue.length}/1000
               </InputGroupText>
             </InputGroupAddon>
           </InputGroup>
