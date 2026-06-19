@@ -1,10 +1,9 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import type z from "zod";
 import { secureFetch } from "@/lib/axios";
 import type { createFairSchema } from "../schema/createFair.schema";
 
-export async function createFair(data: z.infer<typeof createFairSchema>) {
+export async function createFair(data: typeof createFairSchema._zod.input) {
   try {
     const { logo, ...fairData } = data;
     const { id } = await secureFetch<{ id: string }>({

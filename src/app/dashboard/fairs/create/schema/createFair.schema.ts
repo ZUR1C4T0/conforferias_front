@@ -29,9 +29,8 @@ export const createFairSchema = z
       z.number().min(0, "El monto no puede ser negativo"),
     ),
     logo: z
-      .custom<FileList>((val) =>
-        typeof window !== "undefined" ? val instanceof FileList : true,
-      )
+      .any()
+      .transform<File[]>((value) => (value ? Array.from(value) : []))
       .refine((files) => files.length > 0, "El logo es obligatorio")
       .refine(
         (files) => files[0]?.type.startsWith("image/"),

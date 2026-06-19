@@ -60,12 +60,11 @@ export const schema = z
       z.number().min(0, "El monto no puede ser negativo"),
     ),
     logo: z
-      .custom<FileList>((val) =>
-        typeof window !== "undefined" ? val instanceof FileList : true,
-      )
+      .any()
+      .transform((value) => (value ? Array.from(value as FileList) : []))
       .refine((files) => files.length > 0, "El logo es obligatorio")
       .refine(
-        (files) => files[0]?.type.startsWith("image/"),
+        (files) => files[0]?.type?.startsWith("image/"),
         "El logo debe ser una imagen",
       )
       .refine((files) => files[0]?.size <= 5 * 1024 * 1024, "Máximo 5MB"),
@@ -95,7 +94,10 @@ export function CreateFairform() {
 
   const value = form.watch("logo");
   const previewUrl =
-    value instanceof FileList && value.length > 0
+    typeof window !== "undefined" &&
+    value &&
+    (value instanceof window.FileList || Array.isArray(value)) &&
+    value.length > 0
       ? URL.createObjectURL(value[0])
       : null;
 
