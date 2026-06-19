@@ -293,6 +293,7 @@ export default function EditContactForm({
                   <FieldLabel
                     key={potential}
                     htmlFor={`potential-${potential}`}
+                    className="cursor-pointer"
                   >
                     <Field orientation="horizontal">
                       <FieldContent>{potential}</FieldContent>

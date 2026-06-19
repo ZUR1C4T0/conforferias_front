@@ -1,11 +1,22 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Icon } from "@iconify/react";
-import { Notyf } from "notyf";
+import { AlertTriangle, ThumbsDown, ThumbsUp, Zap } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
-import { SubmitButton } from "@/components/SubmitButton";
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldTitle,
+} from "@/components/ui/field";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
 import { DafoType } from "@/lib/constants";
 import { createDafoElement } from "./createDafoElement";
 
@@ -17,113 +28,99 @@ export const schema = z.object({
     .nonempty("La descripción no puede estar vacía"),
 });
 
-const defaultValues: z.infer<typeof schema> = {
-  type: "" as DafoType,
-  description: "",
-};
-
 export default function CreateDafoForm({ fairId }: { fairId: string }) {
   const form = useForm({
     resolver: zodResolver(schema),
-    defaultValues,
     mode: "onBlur",
+    defaultValues: {
+      type: "" as DafoType,
+      description: "",
+    },
   });
 
   const typeIcons = {
-    [DafoType.DEBILIDAD]: "tabler:alert-circle",
-    [DafoType.AMENAZA]: "tabler:alert-triangle",
-    [DafoType.FORTALEZA]: "tabler:thumb-up",
-    [DafoType.OPORTUNIDAD]: "tabler:bolt",
-  };
-
-  const typeColorClasses = {
-    [DafoType.DEBILIDAD]: "peer-checked:border-error peer-checked:bg-error/10",
-    [DafoType.AMENAZA]:
-      "peer-checked:border-warning peer-checked:bg-warning/10",
-    [DafoType.FORTALEZA]:
-      "peer-checked:border-success peer-checked:bg-success/10",
-    [DafoType.OPORTUNIDAD]: "peer-checked:border-info peer-checked:bg-info/10",
-  };
-
-  const typeTextClasses = {
-    [DafoType.DEBILIDAD]: "text-error",
-    [DafoType.AMENAZA]: "text-warning",
-    [DafoType.FORTALEZA]: "text-success",
-    [DafoType.OPORTUNIDAD]: "text-info",
+    [DafoType.DEBILIDAD]: ThumbsDown,
+    [DafoType.AMENAZA]: AlertTriangle,
+    [DafoType.FORTALEZA]: ThumbsUp,
+    [DafoType.OPORTUNIDAD]: Zap,
   };
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const notyf = new Notyf();
     const result = await createDafoElement(fairId, data);
     if (result.success) {
-      notyf.success(result.message);
+      toast.success(result.message);
       form.reset();
     } else {
-      notyf.error(result.message);
+      toast.error(result.message);
     }
   };
 
   return (
-    <div className="card card-border">
-      <div className="card-body">
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* Selección de tipo DAFO */}
-          <div>
-            <span className="label-text">Tipo DAFO</span>
-            <ul className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {Object.values(DafoType).map((type) => (
-                <li key={type}>
-                  <label className="flex flex-col items-center">
-                    <input
-                      type="radio"
-                      className="peer hidden"
-                      value={type}
-                      {...form.register("type")}
-                    />
-                    <div
-                      className={`card card-border w-full cursor-pointer ${typeColorClasses[type]}`}
-                    >
-                      <div className="card-body p-4 text-center">
-                        <Icon
-                          icon={typeIcons[type]}
-                          className={`mx-auto size-6 ${typeTextClasses[type]}`}
-                        />
-                        <span className="mt-2 capitalize">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="@container">
+      <FieldGroup>
+        <Field data-invalid={!!form.formState.errors.type}>
+          <FieldLabel htmlFor="type">Tipo DAFO</FieldLabel>
+          <RadioGroup
+            className="@sm:grid-cols-2"
+            value={form.watch("type")}
+            onValueChange={(value) =>
+              form.setValue("type", value as DafoType, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+          >
+            {Object.values(DafoType).map((type) => {
+              const IconComponent = typeIcons[type];
+              return (
+                <FieldLabel
+                  key={type}
+                  htmlFor={`dafo-${type}`}
+                  className="cursor-pointer"
+                >
+                  <Field orientation="horizontal">
+                    <FieldContent>
+                      <div className="flex items-center gap-2">
+                        <IconComponent className="size-4" />
+                        <FieldTitle className="capitalize">
                           {type.toLowerCase()}
-                        </span>
+                        </FieldTitle>
                       </div>
-                    </div>
-                  </label>
-                </li>
-              ))}
-            </ul>
-            <span className="helper-text text-error">
-              {form.formState.errors.type?.message}
-            </span>
-          </div>
+                    </FieldContent>
+                    <RadioGroupItem
+                      value={type}
+                      id={`dafo-${type}`}
+                      aria-invalid={!!form.formState.errors.type}
+                    />
+                  </Field>
+                </FieldLabel>
+              );
+            })}
+          </RadioGroup>
+          <FieldError errors={[form.formState.errors.type]} />
+        </Field>
 
-          {/* Campo Descripción */}
-          <div>
-            <label htmlFor="description" className="label-text">
-              Descripción *
-            </label>
-            <textarea
-              id="description"
-              className={`textarea ${form.formState.errors.description ? "is-invalid" : ""}`}
-              rows={5}
-              placeholder="Describa el elemento DAFO..."
-              {...form.register("description")}
-            />
-            <span className="helper-text text-error">
-              {form.formState.errors.description?.message}
-            </span>
-          </div>
+        <Field data-invalid={!!form.formState.errors.description}>
+          <FieldLabel htmlFor="description">Descripción</FieldLabel>
+          <Textarea
+            id="description"
+            rows={5}
+            placeholder="Describa el elemento DAFO..."
+            {...form.register("description")}
+            aria-invalid={!!form.formState.errors.description}
+          />
+          <FieldError errors={[form.formState.errors.description]} />
+        </Field>
 
-          <SubmitButton>
-            <Icon icon="tabler:check" className="size-5" /> Crear Elemento
-          </SubmitButton>
-        </form>
-      </div>
-    </div>
+        <Field>
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting && (
+              <Spinner data-icon="inline-start" />
+            )}
+            Crear elemento
+          </Button>
+        </Field>
+      </FieldGroup>
+    </form>
   );
 }
