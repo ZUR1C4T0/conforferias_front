@@ -80,7 +80,7 @@ export default function CreateImprovementForm({ fairId }: { fairId: string }) {
             {form.formState.isSubmitting && (
               <Spinner data-icon="inline-start" />
             )}
-            Registrar mejora
+            Guardar
           </Button>
         </Field>
       </FieldGroup>
