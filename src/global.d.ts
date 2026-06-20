@@ -1,13 +1,6 @@
-import type { HSComboBox, HSOverlay, IStaticMethods } from "flyonui/flyonui";
 import type { ActionStatus, ActivityType, DafoType } from "./lib/constants";
 
 declare global {
-  interface Window {
-    HSStaticMethods: IStaticMethods;
-    HSOverlay: typeof HSOverlay;
-    HSComboBox: typeof HSComboBox;
-  }
-
   interface NextPageContext {
     params: Promise<{ [key: string]: string }>;
     searchParams: Promise<{ [key: string]: string | string[] }>;
