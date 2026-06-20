@@ -12,9 +12,5 @@ export default async function EvaluateFair({ fairId }: { fairId: string }) {
     evaluation = null;
   }
 
-  return (
-    <div className="overflow-x-auto">
-      <EvaluateForm fairId={fairId} evaluation={evaluation} />
-    </div>
-  );
+  return <EvaluateForm fairId={fairId} evaluation={evaluation} />;
 }

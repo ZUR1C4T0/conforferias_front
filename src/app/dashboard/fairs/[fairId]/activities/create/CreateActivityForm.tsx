@@ -1,14 +1,35 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
-import { Notyf } from "notyf";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type z from "zod";
-import { SubmitButton } from "@/components/SubmitButton";
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldTitle,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
+import type { ActivityType } from "@/lib/constants";
 import { createActivity } from "./createActivity";
 import { defaultValues, schema } from "./form";
+
+const activityTypeMap: Record<
+  "CHARLA_TECNICA" | "RUEDA_DE_NEGOCIOS" | "OTRO",
+  string
+> = {
+  CHARLA_TECNICA: "Charla técnica",
+  RUEDA_DE_NEGOCIOS: "Rueda de negocios",
+  OTRO: "Otro",
+};
 
 export default function CreateActivityForm({ fairId }: { fairId: string }) {
   const router = useRouter();
@@ -18,95 +39,90 @@ export default function CreateActivityForm({ fairId }: { fairId: string }) {
     mode: "onSubmit",
   });
 
-  const activityTypeMap: Record<
-    "CHARLA_TECNICA" | "RUEDA_DE_NEGOCIOS" | "OTRO",
-    string
-  > = {
-    CHARLA_TECNICA: "Charla técnica",
-    RUEDA_DE_NEGOCIOS: "Rueda de negocios",
-    OTRO: "Otro",
-  };
-
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const notyf = new Notyf();
     if (!fairId) return;
     const result = await createActivity(fairId, data);
     if (result.success) {
-      notyf.success(result.message);
+      toast.success(result.message);
       router.push("../");
     } else {
-      notyf.error(result.message);
+      toast.error(result.message);
     }
   };
 
   return (
-    <div className="card card-border">
-      <div className="card-body">
-        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <div>
-            <span className="label-text">Tipo de actividad</span>
-            <ul
-              className={
-                "flex w-full flex-col divide-base-content/25 rounded-box border border-base-content/25 *:w-full *:cursor-pointer max-sm:divide-y sm:flex-row sm:divide-x"
-              }
-            >
-              {Object.entries(activityTypeMap).map(([key, value]) => (
-                <li key={key}>
-                  <label className="flex cursor-pointer items-center gap-2 p-3 hover:bg-base-content/5 active:bg-base-content/10">
-                    <input
-                      type="radio"
-                      className={
-                        "radio radio-primary ms-3" +
-                        (form.formState.errors.type ? " is-invalid" : "")
-                      }
-                      value={key}
-                      {...form.register("type")}
-                    />
-                    <span className="label-text text-base">{value}</span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-            <span className="helper-text">
-              {form.formState.errors.type?.message}
-            </span>
-          </div>
+    <form className="@container" onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
+        <Field data-invalid={!!form.formState.errors.type}>
+          <FieldLabel>Tipo de actividad</FieldLabel>
+          <RadioGroup
+            className="grid @lg:grid-cols-3"
+            value={form.watch("type")}
+            onValueChange={(value) =>
+              form.setValue("type", value as ActivityType, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+          >
+            {Object.entries(activityTypeMap).map(([key, value]) => (
+              <FieldLabel
+                key={key}
+                htmlFor={`type-${key}`}
+                className="cursor-pointer"
+              >
+                <Field orientation="horizontal">
+                  <FieldContent>
+                    <FieldTitle className="font-normal text-base">
+                      {value}
+                    </FieldTitle>
+                  </FieldContent>
+                  <RadioGroupItem
+                    value={key}
+                    id={`type-${key}`}
+                    aria-invalid={!!form.formState.errors.type}
+                  />
+                </Field>
+              </FieldLabel>
+            ))}
+          </RadioGroup>
+          <FieldError errors={[form.formState.errors.type]} />
+        </Field>
 
-          <div>
-            <label htmlFor="description" className="label-text">
-              Descripción
-            </label>
-            <textarea
-              id="description"
-              className={`textarea ${form.formState.errors.description ? "is-invalid" : ""}`}
-              rows={3}
-              {...form.register("description")}
-            />
-            <span className="helper-text">
-              {form.formState.errors.description?.message}
-            </span>
-          </div>
+        <Field data-invalid={!!form.formState.errors.description}>
+          <FieldLabel htmlFor="description">Descripción</FieldLabel>
+          <Textarea
+            id="description"
+            placeholder="Describa la actividad realizada..."
+            {...form.register("description")}
+            aria-invalid={!!form.formState.errors.description}
+          />
+          <FieldError errors={[form.formState.errors.description]} />
+        </Field>
 
-          <div>
-            <label htmlFor="attendees" className="label-text">
-              Cuantos asistieron? (Opcional)
-            </label>
-            <input
-              type="number"
-              id="attendees"
-              className={`input ${form.formState.errors.attendees ? "is-invalid" : ""}`}
-              {...form.register("attendees", { valueAsNumber: true })}
-            />
-            <span className="helper-text">
-              {form.formState.errors.attendees?.message}
-            </span>
-          </div>
+        <Field data-invalid={!!form.formState.errors.attendees}>
+          <FieldLabel htmlFor="attendees">
+            ¿Cuántos asistieron? (Opcional)
+          </FieldLabel>
+          <Input
+            type="number"
+            id="attendees"
+            placeholder="Ej. 8"
+            {...form.register("attendees", { valueAsNumber: true })}
+            aria-invalid={!!form.formState.errors.attendees}
+          />
+          <FieldError errors={[form.formState.errors.attendees]} />
+        </Field>
 
-          <SubmitButton>
-            <Icon icon="tabler:check" className="size-4" /> Guardar Actividad
-          </SubmitButton>
-        </form>
-      </div>
-    </div>
+        <Field>
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting && (
+              <Spinner data-icon="inline-start" />
+            )}
+            Guardar
+          </Button>
+        </Field>
+      </FieldGroup>
+    </form>
   );
 }

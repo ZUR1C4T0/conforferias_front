@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react";
+import { Star } from "lucide-react";
 import { secureFetch } from "@/lib/axios";
 
 export async function Valoration({ fairId }: { fairId: string }) {
@@ -6,49 +6,80 @@ export async function Valoration({ fairId }: { fairId: string }) {
     url: `/fairs/${fairId}/evaluations`,
     method: "GET",
   });
-
-  const average =
-    evaluations.reduce((acc, evaluation) => acc + evaluation.score, 0) /
-    evaluations.length;
-
+  const hasEvaluations = evaluations && evaluations.length > 0;
+  const average = hasEvaluations
+    ? evaluations.reduce((acc, evaluation) => acc + evaluation.score, 0) /
+      evaluations.length
+    : 0;
   const percentage = average * 10;
 
   return (
     <div className="flex flex-col gap-8 md:flex-row">
-      <div className="flex shrink-0">
-        <div
-          className="radial-progress mx-auto text-neutral"
-          style={
-            {
-              "--value": percentage,
-              "--size": "10rem",
-              "--thickness": "1rem",
-            } as React.CSSProperties
-          }
-          role="progressbar"
-        >
-          <div className="font-bold text-2xl">
-            {average.toLocaleString(undefined, { maximumFractionDigits: 1 })} /
-            10
-          </div>
-        </div>
+      <div className="flex shrink-0 items-center justify-center p-4">
+        <RadialProgress value={percentage} average={average} />
       </div>
-      <ul className="divide-y divide-base-200">
+
+      <ul className="flex-1 divide-y divide-border">
         {evaluations.map((evaluation) => (
           <li
             key={evaluation.id}
-            className="flex items-start p-2 hover:bg-base-100"
+            className="flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-muted/50"
           >
-            <span className="mr-3 shrink-0 rounded-full bg-secondary p-1 text-secondary-content">
-              <Icon icon="tabler:star" className="size-3" />
-            </span>
+            <div className="flex shrink-0 items-center justify-center rounded-full bg-primary/10 p-1.5 text-primary">
+              <Star className="size-4" />
+            </div>
 
-            <p className="whitespace-pre-line text-sm">
-              <b>{evaluation.score}/10.</b> {evaluation.explanation}
-            </p>
+            <div className="text-foreground text-sm">
+              <span className="font-bold">{evaluation.score}/10. </span>
+              <span className="whitespace-pre-line text-muted-foreground">
+                {evaluation.explanation}
+              </span>
+            </div>
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function RadialProgress({
+  value,
+  average,
+}: {
+  value: number;
+  average: number;
+}) {
+  const radius = 60;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (value / 100) * circumference;
+
+  return (
+    <div className="relative flex size-40 items-center justify-center">
+      <svg className="size-full -rotate-90 transform" viewBox="0 0 140 140">
+        <circle
+          cx="70"
+          cy="70"
+          r={radius}
+          className="fill-transparent stroke-muted"
+          strokeWidth="12"
+        />
+        <circle
+          cx="70"
+          cy="70"
+          r={radius}
+          className="fill-transparent stroke-primary transition-all duration-500 ease-in-out"
+          strokeWidth="12"
+          strokeDasharray={circumference}
+          strokeDashoffset={strokeDashoffset}
+          strokeLinecap="round"
+        />
+      </svg>
+      <div className="absolute flex flex-col items-center justify-center text-foreground">
+        <span className="font-bold text-3xl">
+          {average.toLocaleString(undefined, { maximumFractionDigits: 1 })}
+        </span>
+        <span className="text-muted-foreground text-sm">/ 10</span>
+      </div>
     </div>
   );
 }

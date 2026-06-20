@@ -1,3 +1,12 @@
+"use client";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+
 interface Props {
   profiles: {
     id: string;
@@ -8,24 +17,57 @@ interface Props {
 }
 
 export function ProfileVisitorsGraph({ profiles, total }: Props) {
-  return profiles.map(({ id, name, contacts }) => {
-    return (
-      <div key={id} className="flex items-center gap-x-2">
-        <span className="w-28 truncate text-sm sm:w-40 xl:w-60">{name}</span>
-        <div className="h-4 flex-1 rounded-full bg-gray-200">
-          <div
-            className="h-4 rounded-full bg-info"
-            style={{ width: `${(contacts / total) * 100}%` }}
-          ></div>
-        </div>
-        <span className="ml-2 w-10 font-medium text-sm">
-          {((contacts / total) * 100).toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-          })}
-          %
-        </span>
-      </div>
-    );
-  });
+  const chartConfig = {
+    contacts: {
+      label: "Contactos",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig;
+
+  const chartData = profiles.map(({ name, contacts }) => ({
+    name,
+    contacts,
+    percentage: Math.round((contacts / total) * 100),
+  }));
+
+  return (
+    <ChartContainer config={chartConfig} className="max-h-52 w-full">
+      <BarChart data={chartData} layout="vertical">
+        <XAxis type="number" domain={[0, total]} hide />
+        <YAxis
+          type="category"
+          dataKey="name"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          width={120}
+        />
+        <ChartTooltip
+          content={
+            <ChartTooltipContent
+              formatter={(value) => [
+                `${value} contactos (${Math.round((Number(value) / total) * 100)}%)`,
+                "",
+              ]}
+            />
+          }
+        />
+        <Bar
+          dataKey="contacts"
+          fill="var(--color-contacts)"
+          radius={4}
+          maxBarSize={30}
+          label={{
+            position: "right",
+            formatter: (value) => {
+              value = Number(value);
+              return `${Math.round((value / total) * 100)}%`;
+            },
+            fontSize: 12,
+            fontWeight: 500,
+          }}
+        />
+      </BarChart>
+    </ChartContainer>
+  );
 }

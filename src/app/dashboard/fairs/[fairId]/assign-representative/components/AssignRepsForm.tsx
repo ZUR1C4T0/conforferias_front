@@ -2,10 +2,23 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
-import { Notyf } from "notyf";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+  FieldTitle,
+} from "@/components/ui/field";
+import { Spinner } from "@/components/ui/spinner";
 import { assignRepresentatives } from "../actions/assign-representatives";
 
 interface Props {
@@ -38,7 +51,6 @@ export default function AssignRepsForm({ users, representatives }: Props) {
   }, [representatives, form.reset]);
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const notyf = new Notyf();
     const reprs = data.representatives.map((id) => {
       return { userId: id };
     });
@@ -47,12 +59,12 @@ export default function AssignRepsForm({ users, representatives }: Props) {
       representatives: reprs,
     });
     if (!error) {
-      notyf.success(message);
+      toast.success(message);
       form.reset({
         representatives: representatives.map((rep) => rep.user.id),
       });
     } else {
-      notyf.error(message);
+      toast.error(message);
     }
   };
 
@@ -61,43 +73,62 @@ export default function AssignRepsForm({ users, representatives }: Props) {
       onSubmit={form.handleSubmit(onSubmit)}
       className="w-full overflow-x-auto"
     >
-      <table className="table-lg table">
-        <caption className="flex gap-2 p-5 text-left text-base-content">
-          <p className="text-base-content/80 text-sm">
-            Seleccione los representantes que desea asignar a la feria
-          </p>
-          <button
-            type="submit"
-            disabled={!form.formState.isDirty && !form.formState.isSubmitting}
-            className="btn btn-primary btn-sm"
-          >
-            {form.formState.isSubmitting ? (
-              <span className="loading loading-dots"></span>
-            ) : (
-              "Guardar"
-            )}
-          </button>
-        </caption>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} className="row-hover">
-              <td>
-                <label className="flex cursor-pointer gap-2">
-                  <input
-                    type="checkbox"
-                    id="representatives"
-                    value={user.id}
-                    className="checkbox checkbox-primary"
-                    {...form.register("representatives")}
-                    checked={form.watch("representatives").includes(user.id)}
-                  />
-                  <span className="label-text">{user.name}</span>
-                </label>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <FieldGroup>
+        <FieldSet>
+          <FieldLegend></FieldLegend>
+          <FieldDescription className="flex flex-nowrap gap-2">
+            <span className="grow">
+              Seleccione los representantes que desea asignar a la feria
+            </span>
+            <Button
+              type="submit"
+              disabled={!form.formState.isDirty && !form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting && (
+                <Spinner data-icon="inline-start" />
+              )}
+              Guardar
+            </Button>
+          </FieldDescription>
+
+          <FieldGroup className="gap-3">
+            <Controller
+              control={form.control}
+              name="representatives"
+              render={({ field }) => (
+                <>
+                  {users.map((user) => (
+                    <FieldLabel key={user.id} className="cursor-pointer">
+                      <Field orientation="horizontal">
+                        <Checkbox
+                          checked={field.value.includes(user.id)}
+                          onCheckedChange={(checked) => {
+                            const updatedValues = checked
+                              ? [...field.value, user.id]
+                              : field.value.filter((id) => id !== user.id);
+                            const orderedValues = users
+                              .filter((u) => updatedValues.includes(u.id))
+                              .map((u) => u.id);
+                            field.onChange(orderedValues);
+                          }}
+                        />
+                        <FieldContent>
+                          <FieldTitle className="font-medium text-sm leading-none">
+                            {user.name}
+                          </FieldTitle>
+                          <FieldDescription className="text-muted-foreground text-xs">
+                            {user.email}
+                          </FieldDescription>
+                        </FieldContent>
+                      </Field>
+                    </FieldLabel>
+                  ))}
+                </>
+              )}
+            />
+          </FieldGroup>
+        </FieldSet>
+      </FieldGroup>
     </form>
   );
 }

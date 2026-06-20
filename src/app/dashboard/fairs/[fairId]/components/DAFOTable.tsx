@@ -1,31 +1,45 @@
-import { Icon } from "@iconify/react";
+import { AlertCircle, AlertTriangle, ThumbsUp, Zap } from "lucide-react";
+import { Fragment } from "react/jsx-runtime";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemSeparator,
+} from "@/components/ui/item";
 import { secureFetch } from "@/lib/axios";
 import { DafoType } from "@/lib/constants";
 
 const typeConfig = {
   [DafoType.DEBILIDAD]: {
     title: "Debilidades",
-    icon: "tabler:alert-circle",
-    color: "error",
-    bgColor: "bg-error/10",
+    icon: AlertCircle,
+    color: "text-rose-600",
+    bg: "bg-rose-500/10",
   },
   [DafoType.AMENAZA]: {
     title: "Amenazas",
-    icon: "tabler:alert-triangle",
-    color: "warning",
-    bgColor: "bg-warning/10",
+    icon: AlertTriangle,
+    color: "text-orange-600",
+    bg: "bg-orange-500/10",
   },
   [DafoType.FORTALEZA]: {
     title: "Fortalezas",
-    icon: "tabler:thumb-up",
-    color: "success",
-    bgColor: "bg-success/10",
+    icon: ThumbsUp,
+    color: "text-emerald-600",
+    bg: "bg-emerald-500/10",
   },
   [DafoType.OPORTUNIDAD]: {
     title: "Oportunidades",
-    icon: "tabler:bolt",
-    color: "info",
-    bgColor: "bg-info/10",
+    icon: Zap,
+    color: "text-blue-600",
+    bg: "bg-blue-500/10",
   },
 };
 
@@ -50,34 +64,39 @@ export default async function DAFOTable({ fairId }: { fairId: string }) {
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-      {(Object.keys(typeConfig) as DafoType[]).map((type) => (
-        <div key={type} className="card card-border">
-          <div className={`card-header ${typeConfig[type].bgColor}`}>
-            <div className="flex items-center gap-2">
-              <Icon
-                icon={typeConfig[type].icon}
-                className={`text-${typeConfig[type].color} size-5`}
-              />
-              <h2 className="card-title">{typeConfig[type].title}</h2>
-            </div>
-          </div>
-          <div className="card-body p-0">
-            {groupedDafo[type].length === 0 ? (
-              <div className="p-4 text-center text-base-content/50">
-                No hay {typeConfig[type].title.toLowerCase()} registradas
-              </div>
-            ) : (
-              <ul className="divide-y divide-base-200">
-                {groupedDafo[type].map((item) => (
-                  <li key={item.id} className="p-4 hover:bg-base-100">
-                    <p className="whitespace-pre-line">{item.description}</p>
-                  </li>
+      {(Object.keys(typeConfig) as DafoType[]).map((type) => {
+        const { title, icon: Icon, color, bg } = typeConfig[type];
+        const items = groupedDafo[type];
+        return (
+          <Card key={type} className="gap-2 overflow-hidden p-0">
+            <CardHeader className={`${bg} px-4 py-3`}>
+              <CardTitle className={`flex items-center gap-2 ${color}`}>
+                <Icon className="size-4" />
+                {title}
+              </CardTitle>
+              <CardAction className="text-muted-foreground text-xs">
+                {items.length} {items.length === 1 ? "entrada" : "entradas"}
+              </CardAction>
+            </CardHeader>
+            <CardContent className="p-0">
+              <ItemGroup>
+                {items.map((item, index) => (
+                  <Fragment key={item.id}>
+                    <Item className="">
+                      <ItemContent>
+                        <p className="whitespace-pre-line">
+                          {item.description}
+                        </p>
+                      </ItemContent>
+                    </Item>
+                    {index < items.length - 1 && <ItemSeparator />}
+                  </Fragment>
                 ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      ))}
+              </ItemGroup>
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   );
 }

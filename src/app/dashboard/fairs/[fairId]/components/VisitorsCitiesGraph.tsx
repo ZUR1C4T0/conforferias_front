@@ -1,3 +1,12 @@
+"use client";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+
 interface Props {
   cities: {
     city: string;
@@ -6,16 +15,35 @@ interface Props {
 }
 
 export function VisitorsCitiesGraph({ cities }: Props) {
-  return cities.map(({ city, count }) => (
-    <div key={city} className="flex h-full flex-col items-center justify-end">
-      <div
-        className="w-10 rounded-t bg-accent"
-        style={{
-          height: `${(count / Math.max(...cities.map(({ count }) => count))) * 100}%`,
-        }}
-      ></div>
-      <span className="mt-1 text-xs">{city}</span>
-      <span className="font-medium text-xs">{count}</span>
-    </div>
-  ));
+  const chartConfig = {
+    count: {
+      label: "Visitantes",
+      color: "var(--chart-4)",
+    },
+  } satisfies ChartConfig;
+
+  const capitalize = (value: string) => {
+    return value
+      .split(" ")
+      .map((val) => `${val[0].toUpperCase()}${val.slice(1).toLowerCase()}`)
+      .join(" ");
+  };
+
+  return (
+    <ChartContainer config={chartConfig} className="min-h-60 w-full">
+      <BarChart data={cities}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="city" tickMargin={8} tickFormatter={capitalize} />
+        <YAxis
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          amplitude={1}
+          allowDecimals={false}
+        />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <Bar dataKey="count" fill="var(--color-count)" radius={4} />
+      </BarChart>
+    </ChartContainer>
+  );
 }

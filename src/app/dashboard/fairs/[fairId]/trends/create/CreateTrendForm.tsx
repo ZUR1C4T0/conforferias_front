@@ -1,12 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
-import { Notyf } from "notyf";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
-import { SubmitButton } from "@/components/SubmitButton";
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
 import { createTrend } from "./createTrend";
 
 export const schema = z.object({
@@ -17,72 +25,61 @@ export const schema = z.object({
   details: z.string().nullable(),
 });
 
-const defaultValues: z.infer<typeof schema> = {
-  title: "",
-  details: null,
-};
-
 export default function CreateTrendForm({ fairId }: { fairId: string }) {
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: {
+      title: "",
+      details: null,
+    },
     mode: "onBlur",
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    const notyf = new Notyf();
     const result = await createTrend(fairId, data);
     if (result.success) {
-      notyf.success(result.message);
+      toast.success(result.message);
       router.push("../");
     } else {
-      notyf.error(result.message);
+      toast.error(result.message);
     }
   };
 
   return (
-    <div className="card card-border">
-      <div className="card-body">
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* Campo Título */}
-          <div>
-            <label htmlFor="title" className="label-text">
-              Título
-            </label>
-            <input
-              type="text"
-              id="title"
-              className={`input ${form.formState.errors.title ? "is-invalid" : ""}`}
-              {...form.register("title")}
-            />
-            <span className="helper-text">
-              {form.formState.errors.title?.message}
-            </span>
-          </div>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
+        <Field data-invalid={!!form.formState.errors.title}>
+          <FieldLabel htmlFor="title">Título</FieldLabel>
+          <Input
+            type="text"
+            id="title"
+            {...form.register("title")}
+            aria-invalid={!!form.formState.errors.title}
+          />
+          <FieldError errors={[form.formState.errors.title]} />
+        </Field>
 
-          {/* Campo Detalles */}
-          <div>
-            <label htmlFor="details" className="label-text">
-              Detalles (Opcional)
-            </label>
-            <textarea
-              id="details"
-              className={`textarea ${form.formState.errors.details ? "is-invalid" : ""}`}
-              rows={5}
-              placeholder="Describa la tendencia observada..."
-              {...form.register("details")}
-            />
-            <span className="helper-text">
-              {form.formState.errors.details?.message}
-            </span>
-          </div>
+        <Field data-invalid={!!form.formState.errors.details}>
+          <FieldLabel htmlFor="details">Detalles (Opcional)</FieldLabel>
+          <Textarea
+            id="details"
+            placeholder="Describa la tendencia observada..."
+            {...form.register("details")}
+            aria-invalid={!!form.formState.errors.details}
+          />
+          <FieldError errors={[form.formState.errors.details]} />
+        </Field>
 
-          <SubmitButton>
-            <Icon icon="tabler:check" className="size-5" /> Crear Tendencia
-          </SubmitButton>
-        </form>
-      </div>
-    </div>
+        <Field>
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting && (
+              <Spinner data-icon="inline-start" />
+            )}
+            Guardar
+          </Button>
+        </Field>
+      </FieldGroup>
+    </form>
   );
 }

@@ -1,22 +1,28 @@
-import { Icon } from "@iconify/react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import CreateFairform from "./CreateFairForm";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { CreateFairform } from "./components/CreateFairForm";
 
 export default function CreateFairPage() {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        <Link href="./" className="btn btn-secondary btn-soft btn-circle">
-          <Icon icon="tabler:arrow-left" className="size-5" />
-        </Link>
-        <h1 className="font-semibold text-3xl">Crear feria</h1>
-      </div>
+    <div className="flex flex-col gap-6">
+      <header className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="./">
+            <ArrowLeft data-icon="inline-start" />
+          </Link>
+        </Button>
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          Crear feria
+        </h1>
+      </header>
 
-      <div className="card">
-        <div className="card-body">
+      <Card>
+        <CardContent>
           <CreateFairform />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Public_Sans } from "next/font/google";
 import type { PropsWithChildren } from "react";
-import { FlyonUIProvider } from "@/components/FlyonuiScript";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 import "./globals.css";
 
@@ -19,9 +20,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="es" data-theme="corporate">
-      <body style={publicSans.style} className="antialiased">
-        <FlyonUIProvider>{children}</FlyonUIProvider>
+    <html lang="es">
+      <body style={publicSans.style} className="dark antialiased">
+        <TooltipProvider>
+          {children}
+          <Toaster />
+        </TooltipProvider>
       </body>
     </html>
   );

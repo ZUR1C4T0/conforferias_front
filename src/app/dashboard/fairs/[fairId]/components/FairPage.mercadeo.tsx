@@ -1,4 +1,11 @@
-/** biome-ignore-all lint/a11y/noSvgWithoutTitle: TODO */
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from "@/components/ui/item";
 import { secureFetch } from "@/lib/axios";
 import AchievementsTable from "./AchievementsTable";
 import { CompetitorsTableMercadeo } from "./CompetitorsTable.mercadeo";
@@ -38,126 +45,110 @@ export default async function FairPageMercadeo({ fair }: { fair: Fair }) {
 
   return (
     <>
-      {/* Primera fila de métricas */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-        <div className="card">
-          <div className="card-body text-center">
-            <div className="font-semibold text-xl">Visitantes Nacionales</div>
-            <p className="text-center font-bold text-4xl text-primary">
+      <ItemGroup className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <Item variant="muted">
+          <ItemContent className="text-center">
+            <ItemDescription>Visitantes Nacionales</ItemDescription>
+            <ItemTitle className="w-full justify-center text-4xl">
               {visitors.national}
-            </p>
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-body text-center">
-            <div className="font-semibold text-xl">
-              Visitantes Internacionales
-            </div>
-            <p className="text-center font-bold text-4xl text-accent">
+            </ItemTitle>
+          </ItemContent>
+        </Item>
+        <Item variant="muted">
+          <ItemContent className="text-center">
+            <ItemDescription>Visitantes Internacionales</ItemDescription>
+            <ItemTitle className="w-full justify-center text-4xl">
               {visitors.international}
-            </p>
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-body text-center">
-            <div className="font-semibold text-xl">Total de Visitantes</div>
-            <p className="text-center font-bold text-4xl text-success">
+            </ItemTitle>
+          </ItemContent>
+        </Item>
+        <Item variant="muted">
+          <ItemContent className="text-center">
+            <ItemDescription>Total de Visitantes</ItemDescription>
+            <ItemTitle className="w-full justify-center text-4xl">
               {visitors.total}
-            </p>
-          </div>
-        </div>
-      </div>
+            </ItemTitle>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
-      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Países Visitantes */}
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">Países visitantes</h2>
-          </div>
-          <div className="card-body">
-            <div className="flex h-60 items-end gap-x-2">
-              <VisitorsCountryGraph countries={visitors.countries} />
-            </div>
-          </div>
-        </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Países visitantes</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <VisitorsCountryGraph countries={visitors.countries} />
+        </CardContent>
+      </Card>
 
-        {/* Ciudades visitantes */}
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">Ciudades visitantes</h2>
-          </div>
-          <div className="card-body">
-            <div className="flex h-60 items-end gap-x-2">
-              <VisitorsCitiesGraph cities={visitors.cities} />
-            </div>
-          </div>
-        </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Ciudades visitantes</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <VisitorsCitiesGraph cities={visitors.cities} />
+        </CardContent>
+      </Card>
 
-        {/* Perfil de visitantes */}
-        <div className="card col-span-full">
-          <div className="card-header">
-            <h2 className="card-title">Perfil de visitantes</h2>
-          </div>
-          <div className="card-body min-h-32 gap-2">
-            <ProfileVisitorsGraph
-              profiles={visitors.profiles}
-              total={visitors.total}
-            />
-          </div>
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Perfil de visitantes</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ProfileVisitorsGraph
+            profiles={visitors.profiles}
+            total={visitors.total}
+          />
+        </CardContent>
+      </Card>
 
-      {/* Competidores */}
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">Competidores</h2>
-        </div>
-        <div className="card-body min-h-60">
+      <Card>
+        <CardHeader>
+          <CardTitle>Competidores</CardTitle>
+        </CardHeader>
+        <CardContent>
           <CompetitorsTableMercadeo fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      {/* DAFO */}
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">Análisis DAFO</h2>
-        </div>
-        <div className="card-body">
+      <Card>
+        <CardHeader>
+          <CardTitle>Análisis DAFO</CardTitle>
+        </CardHeader>
+        <CardContent>
           <DAFOTable fairId={fair.id} />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Principales logros */}
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">Principales Logros</h2>
-          </div>
-          <div className="card-body">
+        <Card>
+          <CardHeader>
+            <CardTitle>Principales Logros</CardTitle>
+          </CardHeader>
+          <CardContent>
             <AchievementsTable fairId={fair.id} />
-          </div>
-        </div>
-
-        {/* Áreas de mejora */}
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">Áreas de Mejora</h2>
-          </div>
-          <div className="card-body">
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Área de Mejoras</CardTitle>
+          </CardHeader>
+          <CardContent>
             <ImprovementAreasTable fairId={fair.id} />
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Valoración general */}
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">Valoración General de la Participación</h2>
-        </div>
-        <div className="card-body">
-          <Valoration fairId={fair.id} />
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Valoración General de la Participación</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-center">
+            <Valoration fairId={fair.id} />
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 }

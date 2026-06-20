@@ -1,6 +1,7 @@
-import { Icon } from "@iconify/react";
+import { ArrowLeft, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { secureFetch } from "@/lib/axios";
 import { getRole } from "@/lib/getRole";
 import FairPageMercadeo from "./components/FairPage.mercadeo";
@@ -30,29 +31,26 @@ export default async function FairPage({ params }: NextPageContext) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between gap-3">
-        <Link href="./" className="btn btn-secondary btn-soft btn-circle">
-          <Icon icon="tabler:arrow-left" className="size-5" />
-        </Link>
-        <Image
-          src={fair.logoUrl}
-          alt={fair.name}
-          className="size-10"
-          width={100}
-          height={100}
-        />
-        <h1 className="mt-1 grow font-semibold text-3xl">{fair.name}</h1>
-        {canAssign && (
-          <Link
-            href={`./${fairId}/assign-representative`}
-            className="btn btn-primary"
-          >
-            <Icon icon="tabler:users-group" className="size-5" />{" "}
-            <span className="hidden sm:inline">Asignar representantes</span>
+    <div className="flex flex-col gap-6">
+      <header className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="./">
+            <ArrowLeft data-icon="inline-start" />
           </Link>
+        </Button>
+        <Image src={fair.logoUrl} alt={fair.name} width={40} height={40} />
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          {fair.name}
+        </h1>
+        {canAssign && (
+          <Button className="ml-auto" title="Asignar representantes" asChild>
+            <Link href={`./${fairId}/assign-representative`}>
+              <Users data-icon="inline-start" />
+              <span className="hidden sm:inline">Asignar</span>
+            </Link>
+          </Button>
         )}
-      </div>
+      </header>
 
       {renderPage()}
     </div>

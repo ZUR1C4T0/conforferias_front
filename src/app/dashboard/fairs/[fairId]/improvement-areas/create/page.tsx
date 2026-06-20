@@ -1,5 +1,7 @@
-import { Icon } from "@iconify/react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import CreateImprovementForm from "./CreateImprovementForm";
 
 export default async function CreateImprovementPage({
@@ -8,17 +10,23 @@ export default async function CreateImprovementPage({
   const { fairId } = await params;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link href="../" className="btn btn-secondary btn-soft btn-circle">
-          <Icon icon="tabler:arrow-left" className="size-5" />
-        </Link>
-        <h1 className="font-semibold text-xl sm:text-3xl">
-          Nueva Área de Mejora
+    <div className="flex flex-col gap-6">
+      <header className="flex items-center gap-4">
+        <Button variant="ghost" asChild>
+          <Link href="../">
+            <ArrowLeft data-icon="inline-start" />
+          </Link>
+        </Button>
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          Nueva área de mejora
         </h1>
-      </div>
+      </header>
 
-      <CreateImprovementForm fairId={fairId} />
+      <Card>
+        <CardContent>
+          <CreateImprovementForm fairId={fairId} />
+        </CardContent>
+      </Card>
     </div>
   );
 }

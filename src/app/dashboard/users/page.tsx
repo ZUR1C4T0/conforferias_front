@@ -1,6 +1,19 @@
-import { Icon } from "@iconify/react";
+import { UserPlus } from "lucide-react";
 import Link from "next/link";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
 import { secureFetch } from "@/lib/axios";
+import { cn } from "@/lib/utils";
 
 export default async function UsersPage() {
   const users = await secureFetch<User[]>({
@@ -9,52 +22,54 @@ export default async function UsersPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-semibold text-3xl">Usuarios</h1>
-        <Link href="./users/create" className="btn btn-primary">
-          <Icon icon="tabler:plus" className="size-5" /> Crear usuario
-        </Link>
-      </div>
+    <div className="flex flex-col gap-6">
+      <header className="flex items-center justify-between">
+        <h1 className="scroll-m-20 font-semibold text-2xl tracking-tight">
+          Usuarios
+        </h1>
+        <Button size="sm" asChild>
+          <Link href="./users/create">
+            <UserPlus data-icon="inline-start" /> Crear
+          </Link>
+        </Button>
+      </header>
 
-      <div className="space-y-4">
-        {users.length === 0 ? (
-          <div className="card">
-            <div className="card-body justify-center">
-              <p className="text-center text-base-content/50">
-                No hay usuarios disponibles
-              </p>
-            </div>
-          </div>
-        ) : (
-          users.map((user) => (
-            <Link
-              key={user.id}
-              href={`./users/${user.id}/edit`}
-              className="card hover:-translate-y-0.5 transition-transform hover:cursor-pointer hover:bg-base-200"
-            >
-              <div className="card-body">
-                <div className="flex items-center gap-4">
-                  <Icon icon="tabler:briefcase-2" className="size-15" />
-                  <div className="grow space-y-2">
-                    <h2 className="card-title">{user.name}</h2>
-                    <p className="text-base-300/50 text-sm">{user.email}</p>
-                    <span className="badge badge-accent badge-soft rounded-full">
-                      {user.role === "ADMIN" && "Administrador"}
-                      {user.role === "MERCADEO" && "Mercadeo"}
-                      {user.role === "REPRESENTANTE" && "Comercial"}
-                    </span>
-                  </div>
-                  <span className="badge badge-primary rounded-full">
-                    Editar
-                    <Icon icon="tabler:pencil" className="size-5" />
-                  </span>
-                </div>
-              </div>
+      <ItemGroup className="gap-4">
+        {users.map((user) => (
+          <Item key={user.id} variant="outline" role="listitem" asChild>
+            <Link href={`./users/${user.id}/edit`}>
+              <ItemMedia>
+                <Avatar>
+                  <AvatarFallback>
+                    {user.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .slice(0, 2)
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{user.name}</ItemTitle>
+                <ItemDescription>{user.email}</ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge
+                  className={cn(
+                    user.role === "ADMIN" && "bg-chart-1",
+                    user.role === "MERCADEO" && "bg-chart-2",
+                    user.role === "REPRESENTANTE" && "bg-chart-3",
+                  )}
+                >
+                  {user.role === "ADMIN" && "Administrador"}
+                  {user.role === "MERCADEO" && "Mercadeo"}
+                  {user.role === "REPRESENTANTE" && "Comercial"}
+                </Badge>
+              </ItemActions>
             </Link>
-          ))
-        )}
-      </div>
+          </Item>
+        ))}
+      </ItemGroup>
     </div>
   );
 }
