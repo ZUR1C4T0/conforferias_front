@@ -59,8 +59,10 @@ export function ProfileVisitorsGraph({ profiles, total }: Props) {
           maxBarSize={30}
           label={{
             position: "right",
-            formatter: (value: number) =>
-              `${Math.round((value / total) * 100)}%`,
+            formatter: (value) => {
+              value = Number(value);
+              return `${Math.round((value / total) * 100)}%`;
+            },
             fontSize: 12,
             fontWeight: 500,
           }}

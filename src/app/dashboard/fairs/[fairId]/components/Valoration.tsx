@@ -56,9 +56,6 @@ function RadialProgress({
   return (
     <div className="relative flex size-40 items-center justify-center">
       <svg className="size-full -rotate-90 transform" viewBox="0 0 140 140">
-        <title>
-          {average.toLocaleString(undefined, { maximumFractionDigits: 1 })} / 10
-        </title>
         <circle
           cx="70"
           cy="70"

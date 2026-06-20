@@ -72,24 +72,23 @@ export default async function FairPageMercadeo({ fair }: { fair: Fair }) {
         </Item>
       </ItemGroup>
 
-      <ItemGroup className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Países visitantes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <VisitorsCountryGraph countries={visitors.countries} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Ciudades visitantes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <VisitorsCitiesGraph cities={visitors.cities} />
-          </CardContent>
-        </Card>
-      </ItemGroup>
+      <Card>
+        <CardHeader>
+          <CardTitle>Países visitantes</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <VisitorsCountryGraph countries={visitors.countries} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Ciudades visitantes</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <VisitorsCitiesGraph cities={visitors.cities} />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
