@@ -22,7 +22,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
             className="mr-2 data-[orientation=vertical]:h-4"
           />
           <Button variant="outline" className="ms-auto" asChild>
-            <Link href="/logout">
+            <Link href="/logout" prefetch={false}>
               Cerrar sesión
               <LogOut />
             </Link>
