@@ -36,6 +36,7 @@ export async function loginAction(_prevState: LoginState, formData: FormData) {
     ) {
       return { error: "Credenciales inválidas" };
     }
+    console.error(error);
     return { error: "Error inesperado durante el inicio de sesión" };
   }
   redirect("/dashboard/fairs");
